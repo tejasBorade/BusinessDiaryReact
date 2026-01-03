@@ -166,6 +166,11 @@ const MyBusinesses = () => {
           </button>
         </div>
 
+        {/* Floating Action Button */}
+        <button onClick={openCreateModal} className="fab" title="Add New Business">
+          <span className="fab-icon">+</span>
+        </button>
+
         {message && <div className="alert alert-success">{message}</div>}
         {error && <div className="alert alert-error">{error}</div>}
 
@@ -270,12 +275,17 @@ const MyBusinesses = () => {
           </div>
         )}
 
-        {/* Modal */}
+        {/* Enhanced Modal Popup */}
         {showModal && (
-          <div className="modal-overlay" onClick={() => setShowModal(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-overlay modal-fade-in" onClick={() => setShowModal(false)}>
+            <div className="modal-content modal-slide-up" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header">
-                <h2>{editingBusiness ? 'Edit Business' : 'Add New Business'}</h2>
+                <div className="modal-header-content">
+                  <div className="modal-icon">
+                    {editingBusiness ? '✏️' : '🏪'}
+                  </div>
+                  <h2>{editingBusiness ? 'Edit Business' : 'Add New Business'}</h2>
+                </div>
                 <button className="modal-close" onClick={() => setShowModal(false)}>
                   &times;
                 </button>
@@ -588,48 +598,231 @@ const MyBusinesses = () => {
           padding: 0 20px 20px;
           gap: 10px;
         }
-
-        .business-actions button {
-          flex: 1;
+/* Floating Action Button */
+        .fab {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 900;
+          transition: all 0.3s ease;
         }
 
-        .modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
+        .fab:hover {
+          transform: scale(1.1) rotate(90deg);
+          box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .fab-icon {
+          font-size: 32px;
+          font-weight: 300;
+          line-height: 1;
+        }
+
+        /* Modal Animations */
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        @keyframes slideUp {
+          from {
+            transform: translateY(50px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }30px;
+        }
+
+        .modal-content .form-group {
+          margin-bottom: 20px;
+        }
+
+        .modal-content .form-group label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 600;
+          color: #333;
+          font-size: 14px;
+        }
+
+        .modal-content .form-control {
+          width: 100%;
+          padding: 12px 16px;
+          border: 2px solid #e2e8f0;
+          border-radius: 8px;
+          font-size: 15px;
+          transition: all 0.3s ease;
+        }
+
+        .modal-content .form-control:focus {
+          outline: none;
+          border-color: #667eea;
+          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 15px;
+        }
+
+
+          .modal-content {
+            max-width: 100%;
+            margin: 10px;
+          }
+
+          .modal-header {
+            padding: 20px;
+          }
+
+          .modal-header h2 {
+            font-size: 22px;
+          }
+
+          .modal-icon {
+            font-size: 28px;
+          }
+
+          .modal-content form {
+            padding: 20px;
+          }
+
+          .modal-footer {
+            padding: 15px 20px;
+          }
+
+          .fab {
+            width: 56px;
+            height: 56px;
+            bottom: 20px;
+            right: 20px;
+          }
+
+          .fab-icon {
+            font-size: 28px;
+          }
+        .modal-footer {
+          display: flex;
+          justify-content: flex-end;
+          gap: 12px;
+          padding: 20px 30px;
+          border-top: 2px solid #f0f0f0;
+          background: #f8f9fa;
+          border-radius: 0 0 16px 16px;
+        }
+
+        .modal-footer .btn {
+          padding: 12px 24px;
+          font-size: 15px;
+          font-weight: 600;
+          border-radius: 8px;
+          transition: all 0.3s ease;
+        }
+
+        .modal-footer .btn-primary {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          border: none;
+          box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-footer .btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .modal-footer .btn-secondary {
+          background: white;
+          border: 2px solid #e2e8f0;
+          color: #666;
+        }
+
+        .modal-footer .btn-secondary:hover {
+          background: #f8f9fa;
+          border-color: #cbd5
           bottom: 0;
-          background-color: rgba(0, 0, 0, 0.5);
+          background-color: rgba(0, 0, 0, 0.6);
+          backdrop-filter: blur(4px);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 1000;
+          padding: 20px;
         }
 
         .modal-content {
           background: white;
-          border-radius: 8px;
-          width: 90%;
-          max-width: 600px;
+          border-radius: 16px;
+          width: 100%;
+          max-width: 650px;
           max-height: 90vh;
           overflow-y: auto;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .modal-header {
           display: flex;
           justify-content: space-between;
+          align-items: flex-start;
+          padding: 30px 30px 20px;
+          border-bottom: 2px solid #f0f0f0;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border-radius: 16px 16px 0 0;
+        }
+
+        .modal-header-content {
+          display: flex;
           align-items: center;
-          padding: 20px;
-          border-bottom: 1px solid #e0e0e0;
+          gap: 15px;
+        }
+
+        .modal-icon {
+          font-size: 32px;
         }
 
         .modal-header h2 {
           margin: 0;
-          font-size: 24px;
+          font-size: 26px;
+          font-weight: 700;
         }
 
         .modal-close {
+          background: rgba(255, 255, 255, 0.2);
+          border: none;
+          font-size: 28px;
+          cursor: pointer;
+          color: white;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: rotate(90deg){
           background: none;
           border: none;
           font-size: 28px;
