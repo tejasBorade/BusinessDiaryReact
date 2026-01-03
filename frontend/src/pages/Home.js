@@ -212,7 +212,12 @@ const Home = () => {
           ) : (
             <div className="businesses-grid">
               {businesses.map((business) => (
-                <div key={business.id} className="business-card">
+                <div 
+                  key={business.id} 
+                  className="business-card"
+                  onClick={() => navigate(`/business/${business.id}`)}
+                  style={{ cursor: 'pointer' }}
+                >
                   {business.image_url && (
                     <div className="business-image">
                       <img src={business.image_url} alt={business.name} />
@@ -260,7 +265,8 @@ const Home = () => {
                         </span>
                       </div>
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setRatingBusiness(business.id);
                           setUserRating(0);
                         }}

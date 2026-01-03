@@ -36,6 +36,8 @@ function App() {
             </PrivateRoute>
           } />
           
+          <Route path="/business/:id" element={<BusinessDetail />} />
+          
           <Route path="/businesses" element={
             <PrivateRoute>
               <BusinessList />

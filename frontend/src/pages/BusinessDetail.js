@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import PageLayout from '../components/PageLayout';
-import { businessService } from '../services';
+import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import './BusinessDetail.css';
 
@@ -20,8 +19,8 @@ const BusinessDetail = () => {
 
   const fetchBusinessDetail = async () => {
     try {
-      const data = await businessService.getBusiness(id);
-      setBusiness(data.business);
+      const response = await axios.get(`http://127.0.0.1:5000/api/businesses/${id}`);
+      setBusiness(response.data.business);
     } catch (error) {
       console.error('Error fetching business:', error);
       setError('Business not found');
@@ -33,35 +32,75 @@ const BusinessDetail = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await businessService.addReview(id, reviewForm);
+      await axios.post(`http://127.0.0.1:5000/api/businesses/${id}/rate`, {
+        rating: reviewForm.rating
+      });
+      alert('Thank you for your rating!');
       setReviewForm({ rating: 5, comment: '' });
       fetchBusinessDetail();
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to add review');
+      alert(error.response?.data?.message || 'Failed to submit rating');
     }
   };
 
   if (loading) {
     return (
-      <PageLayout>
+      <div className="public-page-wrapper">
         <div className="loading">Loading business details...</div>
-      </PageLayout>
+      </div>
     );
   }
 
   if (error || !business) {
     return (
-      <PageLayout>
+      <div className="public-page-wrapper">
+        <header className="public-header">
+          <div className="header-content">
+            <div className="logo" onClick={() => navigate('/')}>
+              <span className="logo-icon">📒</span>
+              <span className="logo-text">Business Diary</span>
+            </div>
+            <nav className="header-nav">
+              {!user ? (
+                <>
+                  <button onClick={() => navigate('/login')} className="btn btn-outline">Login</button>
+                  <button onClick={() => navigate('/register')} className="btn btn-primary">Sign Up</button>
+                </>
+              ) : (
+                <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Dashboard</button>
+              )}
+            </nav>
+          </div>
+        </header>
         <div className="container">
           <div className="alert alert-error">{error || 'Business not found'}</div>
         </div>
-      </PageLayout>
+      </div>
     );
   }
 
   return (
-    <PageLayout>
-      <div className="container">
+    <div className="public-page-wrapper">
+      <header className="public-header">
+        <div className="header-content">
+          <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
+            <span className="logo-icon">📒</span>
+            <span className="logo-text">Business Diary</span>
+          </div>
+          <nav className="header-nav">
+            {!user ? (
+              <>
+                <button onClick={() => navigate('/login')} className="btn btn-outline">Login</button>
+                <button onClick={() => navigate('/register')} className="btn btn-primary">Sign Up</button>
+              </>
+            ) : (
+              <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Dashboard</button>
+            )}
+          </nav>
+        </div>
+      </header>
+
+      <div className="container" style={{ paddingTop: '40px' }}>
         <button onClick={() => navigate(-1)} className="btn btn-secondary btn-back">
           ← Back
         </button>
@@ -159,7 +198,7 @@ const BusinessDetail = () => {
           </div>
         </div>
       </div>
-    </PageLayout>
+    </div>
   );
 };
 

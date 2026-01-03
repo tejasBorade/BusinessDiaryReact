@@ -4,6 +4,12 @@
   background-color: #f5f5f5;
 }
 
+/* Public Page Wrapper (shared with BusinessDetail) */
+.public-page-wrapper {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
 /* Public Header */
 .public-header {
   background: linear-gradient(135deg, #1a1f3a 0%, #2d3561 100%);

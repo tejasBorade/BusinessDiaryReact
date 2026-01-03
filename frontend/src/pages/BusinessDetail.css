@@ -1,3 +1,6 @@
+/* Import public header styles from Home.css */
+@import './Home.css';
+
 .btn-back {
   margin-bottom: 20px;
 }
