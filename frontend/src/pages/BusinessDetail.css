@@ -1,0 +1,156 @@
+.btn-back {
+  margin-bottom: 20px;
+}
+
+.business-detail-card {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.business-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.business-detail-header h1 {
+  margin: 0 0 10px 0;
+  color: #333;
+}
+
+.category-badge {
+  display: inline-block;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 6px 15px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.verified-badge-large {
+  background-color: #28a745;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.business-info-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.info-section {
+  margin-bottom: 30px;
+}
+
+.info-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.info-section p {
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.info-section a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.info-section a:hover {
+  text-decoration: underline;
+}
+
+.rating-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff9e6;
+  border-radius: 8px;
+}
+
+.rating-number {
+  font-size: 48px;
+  font-weight: bold;
+  color: #ff9800;
+  margin-bottom: 10px;
+}
+
+.rating-stars {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.review-count {
+  color: #666;
+  font-size: 14px;
+}
+
+.reviews-section {
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.review-form-card {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.review-form-card h4 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reviews-list {
+  margin-top: 30px;
+}
+
+.review-card {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.review-rating {
+  color: #ff9800;
+}
+
+.review-comment {
+  color: #555;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.review-date {
+  color: #999;
+  font-size: 12px;
+}
+
+@media (max-width: 768px) {
+  .business-info-grid {
+    grid-template-columns: 1fr;
+  }
+}

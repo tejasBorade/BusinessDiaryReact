@@ -1,0 +1,119 @@
+.page-header {
+  margin-bottom: 30px;
+}
+
+.page-header h1 {
+  color: #333;
+}
+
+.filters-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 15px;
+  align-items: end;
+}
+
+.business-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.business-card {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.business-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.business-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 10px;
+}
+
+.business-header h3 {
+  color: #333;
+  margin: 0;
+  font-size: 20px;
+}
+
+.verified-badge {
+  background-color: #28a745;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.business-category {
+  display: inline-block;
+  background-color: #e3f2fd;
+  color: #1976d2;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.business-location {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.business-description {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 15px;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.business-footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 15px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 14px;
+}
+
+.rating {
+  color: #ff9800;
+  font-weight: 500;
+}
+
+.phone {
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .filters-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .business-grid {
+    grid-template-columns: 1fr;
+  }
+}
