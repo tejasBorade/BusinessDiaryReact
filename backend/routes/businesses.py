@@ -43,6 +43,30 @@ def get_businesses():
         return jsonify({'message': 'Failed to fetch businesses', 'error': str(e)}), 500
 
 
+@businesses_bp.route('/my', methods=['GET'])
+@token_required
+def get_my_businesses(current_user):
+    try:
+        print(f"Fetching businesses for user: {current_user.id}, {current_user.email}")
+        # Get businesses owned by the current user
+        businesses = Business.query.filter_by(owner_id=current_user.id).all()
+        print(f"Found {len(businesses)} businesses")
+        
+        result = []
+        for business in businesses:
+            business_dict = business.to_dict()
+            business_dict['category'] = business.category.to_dict() if business.category else None
+            business_dict['area'] = business.area.to_dict() if business.area else None
+            result.append(business_dict)
+        
+        return jsonify({'businesses': result}), 200
+    except Exception as e:
+        print(f"Error in get_my_businesses: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'message': 'Failed to fetch your businesses', 'error': str(e)}), 500
+
+
 @businesses_bp.route('/<int:business_id>', methods=['GET'])
 def get_business(business_id):
     try:
@@ -96,6 +120,8 @@ def create_business(current_user):
             email=data.get('email'),
             website=data.get('website'),
             opening_hours=data.get('opening_hours'),
+            image_url=data.get('image_url'),
+            gallery_images=data.get('gallery_images', []),
             is_verified=False,
             is_active=True
         )
@@ -139,6 +165,10 @@ def update_business(current_user, business_id):
             business.website = data['website']
         if 'opening_hours' in data:
             business.opening_hours = data['opening_hours']
+        if 'image_url' in data:
+            business.image_url = data['image_url']
+        if 'gallery_images' in data:
+            business.gallery_images = data['gallery_images']
         
         # Only admins can change verification status
         if current_user.role in ['super_admin', 'admin']:

@@ -64,6 +64,11 @@ export const businessService = {
     return response.data;
   },
 
+  getMyBusinesses: async () => {
+    const response = await api.get('/businesses/my');
+    return response.data;
+  },
+
   getBusiness: async (id) => {
     const response = await api.get(`/businesses/${id}`);
     return response.data;
