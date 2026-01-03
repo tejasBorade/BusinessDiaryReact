@@ -126,6 +126,10 @@ class Business(db.Model):
     rating = db.Column(db.Float, default=0.0)
     total_reviews = db.Column(db.Integer, default=0)
     
+    # Images
+    image_url = db.Column(db.String(500))  # Main business image
+    gallery_images = db.Column(db.JSON)  # Array of additional images
+    
     # Status
     is_verified = db.Column(db.Boolean, default=False)
     is_active = db.Column(db.Boolean, default=True)
@@ -153,6 +157,8 @@ class Business(db.Model):
             'opening_hours': self.opening_hours,
             'rating': self.rating,
             'total_reviews': self.total_reviews,
+            'image_url': self.image_url,
+            'gallery_images': self.gallery_images or [],
             'is_verified': self.is_verified,
             'is_active': self.is_active,
             'created_at': self.created_at.isoformat() if self.created_at else None,

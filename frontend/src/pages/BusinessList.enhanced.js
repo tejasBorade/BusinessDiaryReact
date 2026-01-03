@@ -13,7 +13,7 @@ const BusinessList = () => {
     search: '',
     category_id: '',
     area_id: '',
-    page: 1,
+    page: 1
   });
 
   useEffect(() => {

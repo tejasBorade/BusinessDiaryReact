@@ -19,6 +19,8 @@ const MyBusinesses = () => {
     email: '',
     website: '',
     opening_hours: '',
+    image_url: '',
+    gallery_images: [],
   });
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -81,6 +83,8 @@ const MyBusinesses = () => {
       email: '',
       website: '',
       opening_hours: '',
+      image_url: '',
+      gallery_images: [],
     });
     setShowModal(true);
     setMessage('');
@@ -99,6 +103,8 @@ const MyBusinesses = () => {
       email: business.email || '',
       website: business.website || '',
       opening_hours: business.opening_hours || '',
+      image_url: business.image_url || '',
+      gallery_images: business.gallery_images || [],
     });
     setShowModal(true);
     setMessage('');
@@ -178,6 +184,18 @@ const MyBusinesses = () => {
           <div className="businesses-grid">
             {businesses.map((business) => (
               <div key={business.id} className="business-card">
+                {business.image_url && (
+                  <div className="business-image-header">
+                    <img 
+                      src={business.image_url} 
+                      alt={business.name}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
+                
                 <div className="business-header">
                   <h3>{business.name}</h3>
                   {business.is_verified && (
@@ -387,6 +405,38 @@ const MyBusinesses = () => {
                   />
                 </div>
 
+                <div className="form-group">
+                  <label>Business Image URL</label>
+                  <input
+                    type="url"
+                    name="image_url"
+                    className="form-control"
+                    value={formData.image_url}
+                    onChange={handleInputChange}
+                    placeholder="https://example.com/image.jpg"
+                  />
+                  <small style={{ color: '#6c757d' }}>
+                    Enter image URL (e.g., from Unsplash, Google Images, or your website)
+                  </small>
+                  {formData.image_url && (
+                    <div style={{ marginTop: '10px' }}>
+                      <img 
+                        src={formData.image_url} 
+                        alt="Preview" 
+                        style={{ 
+                          maxWidth: '100%', 
+                          maxHeight: '200px', 
+                          borderRadius: '8px',
+                          objectFit: 'cover'
+                        }}
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+
                 <div className="modal-footer">
                   <button
                     type="button"
@@ -411,22 +461,35 @@ const MyBusinesses = () => {
           justify-content: space-between;
           align-items: center;
           margin-bottom: 20px;
+        }overflow: hidden;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          transition: box-shadow 0.3s ease;
         }
 
-        .empty-state {
-          text-align: center;
-          padding: 60px 20px;
+        .business-card:hover {
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
-        .empty-icon {
-          font-size: 64px;
-          margin-bottom: 20px;
+        .business-image-header {
+          width: 100%;
+          height: 200px;
+          overflow: hidden;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        .empty-state h2 {
-          color: #333;
-          margin-bottom: 10px;
+        .business-image-header img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
+
+        .business-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 15px;
+          border-bottom: 2px solid #f0f0f0;
+          padding: 15px 20px
 
         .empty-state p {
           color: #666;
@@ -465,6 +528,7 @@ const MyBusinesses = () => {
           margin: 0;
           font-size: 20px;
           color: #333;
+          padding: 0 20px;
         }
 
         .verified-badge {
@@ -493,9 +557,9 @@ const MyBusinesses = () => {
         }
 
         .badge-category {
-          background-color: #007bff;
-          color: white;
-          padding: 4px 8px;
+          backgroun0 20px 10px;
+          background-color: #f8f9fa;
+          border-radius: 0
           border-radius: 4px;
           font-size: 12px;
         }
@@ -521,6 +585,7 @@ const MyBusinesses = () => {
 
         .business-actions {
           display: flex;
+          padding: 0 20px 20px;
           gap: 10px;
         }
 
