@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { businessService, categoryService, areaService } from '../services';
 import './MyBusinesses.css';
 
@@ -157,8 +157,7 @@ const MyBusinesses = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="container">
         <div className="page-header">
           <h1>My Businesses</h1>
@@ -266,14 +265,16 @@ const MyBusinesses = () => {
                   <button
                     onClick={() => openEditModal(business)}
                     className="btn btn-secondary btn-sm"
+                    title="Edit business details"
                   >
-                    Edit
+                    ✏️ Edit
                   </button>
                   <button
                     onClick={() => handleDelete(business.id, business.name)}
                     className="btn btn-danger btn-sm"
+                    title="Delete business"
                   >
-                    Delete
+                    🗑️ Delete
                   </button>
                 </div>
               </div>
@@ -478,7 +479,7 @@ const MyBusinesses = () => {
           </div>
         )}
       </div>
-    </>
+    </PageLayout>
   );
 };
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { useAuth } from '../context/AuthContext';
 import { userService } from '../services';
 
@@ -38,8 +38,7 @@ const Profile = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="container">
         <h1>My Profile</h1>
         
@@ -111,7 +110,7 @@ const Profile = () => {
           </form>
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 

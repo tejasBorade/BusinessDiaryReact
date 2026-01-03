@@ -13,6 +13,32 @@ body {
   background-color: #f5f5f5;
 }
 
+/* Main content wrapper for pages with sidebar */
+.page-wrapper {
+  margin-left: 260px;
+  min-height: 100vh;
+  width: calc(100% - 260px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.page-wrapper.sidebar-collapsed {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+@media (max-width: 768px) {
+  .page-wrapper {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+  }
+  
+  .page-wrapper.sidebar-collapsed {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

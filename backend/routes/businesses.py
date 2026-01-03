@@ -204,6 +204,45 @@ def delete_business(current_user, business_id):
         return jsonify({'message': 'Failed to delete business', 'error': str(e)}), 500
 
 
+@businesses_bp.route('/<int:business_id>/rate', methods=['POST'])
+def rate_business(business_id):
+    """Public endpoint to rate a business without authentication"""
+    try:
+        business = Business.query.get_or_404(business_id)
+        data = request.get_json()
+        
+        if 'rating' not in data or not (1 <= data['rating'] <= 5):
+            return jsonify({'message': 'Rating must be between 1 and 5'}), 400
+        
+        # For public ratings, we update the business rating directly
+        # without creating a review record (anonymous rating)
+        new_rating = float(data['rating'])
+        
+        if business.rating and business.rating > 0:
+            # Calculate new average rating
+            # Assuming total_reviews tracks the number of ratings
+            total_ratings = business.total_reviews if business.total_reviews else 1
+            current_total = business.rating * total_ratings
+            new_total = current_total + new_rating
+            business.rating = new_total / (total_ratings + 1)
+            business.total_reviews = total_ratings + 1
+        else:
+            # First rating
+            business.rating = new_rating
+            business.total_reviews = 1
+        
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Rating submitted successfully',
+            'new_rating': round(business.rating, 2),
+            'total_reviews': business.total_reviews
+        }), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'message': 'Failed to submit rating', 'error': str(e)}), 500
+
+
 @businesses_bp.route('/<int:business_id>/reviews', methods=['POST'])
 @token_required
 def add_review(current_user, business_id):

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { userService } from '../services';
 import { authService } from '../services';
 
@@ -159,8 +159,7 @@ const UserManagement = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="container">
         <div className="page-header">
           <h1>User Management</h1>
@@ -517,7 +516,7 @@ const UserManagement = () => {
           font-size: 12px;
         }
       `}</style>
-    </>
+    </PageLayout>
   );
 };
 

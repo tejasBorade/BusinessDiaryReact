@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { useAuth } from '../context/AuthContext';
 import { userService, businessService } from '../services';
 import './Dashboard.css';
@@ -39,16 +39,14 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <>
-        <Navbar />
+      <PageLayout>
         <div className="loading">Loading dashboard...</div>
-      </>
+      </PageLayout>
     );
   }
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="container">
         <div className="dashboard-header">
           <h1>Welcome, {user.full_name}!</h1>
@@ -111,7 +109,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 

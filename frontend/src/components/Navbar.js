@@ -1,51 +1,134 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <nav className="navbar">
-      <div className="navbar-container">
-        <Link to="/dashboard" className="navbar-brand">
-          Business Diary
+    <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
+      <button 
+        className="sidebar-toggle" 
+        onClick={() => setCollapsed(!collapsed)}
+        title={collapsed ? 'Expand' : 'Collapse'}
+      >
+        <span className="toggle-icon">{collapsed ? '☰' : '✕'}</span>
+      </button>
+
+      <div className="sidebar-header">
+        <Link to="/dashboard" className="sidebar-brand">
+          <span className="brand-icon">📒</span>
+          {!collapsed && <span className="brand-text">Business Diary</span>}
         </Link>
-        
-        <div className="navbar-menu">
-          <Link to="/dashboard" className="nav-link">Dashboard</Link>
-          <Link to="/businesses" className="nav-link">Businesses</Link>
-          
-          {user && (user.role === 'store_owner' || user.role === 'admin' || user.role === 'super_admin') && (
-            <Link to="/my-businesses" className="nav-link">My Businesses</Link>
-          )}
-          
-          {user && (user.role === 'admin' || user.role === 'super_admin') && (
-            <>
-              <Link to="/users" className="nav-link">Users</Link>
-              <Link to="/categories" className="nav-link">Categories</Link>
-            </>
-          )}
-          
-          {user && (user.role === 'area_manager' || user.role === 'admin' || user.role === 'super_admin') && (
-            <Link to="/areas" className="nav-link">Areas</Link>
-          )}
-          
-          <div className="navbar-user">
-            <span className="user-name">{user?.full_name} ({user?.role})</span>
-            <Link to="/profile" className="nav-link">Profile</Link>
-            <button onClick={handleLogout} className="btn btn-secondary btn-sm">Logout</button>
-          </div>
-        </div>
       </div>
-    </nav>
+
+      <div className="sidebar-menu">
+        <Link 
+          to="/dashboard" 
+          className={`sidebar-link ${isActive('/dashboard') ? 'active' : ''}`}
+          title="Dashboard"
+        >
+          <span className="link-icon">📊</span>
+          {!collapsed && <span className="link-text">Dashboard</span>}
+        </Link>
+
+        <Link 
+          to="/businesses" 
+          className={`sidebar-link ${isActive('/businesses') ? 'active' : ''}`}
+          title="Businesses"
+        >
+          <span className="link-icon">🏢</span>
+          {!collapsed && <span className="link-text">Businesses</span>}
+        </Link>
+
+        {user && (user.role === 'store_owner' || user.role === 'admin' || user.role === 'super_admin') && (
+          <Link 
+            to="/my-businesses" 
+            className={`sidebar-link ${isActive('/my-businesses') ? 'active' : ''}`}
+            title="My Businesses"
+          >
+            <span className="link-icon">🏪</span>
+            {!collapsed && <span className="link-text">My Businesses</span>}
+          </Link>
+        )}
+
+        {user && (user.role === 'admin' || user.role === 'super_admin') && (
+          <>
+            <Link 
+              to="/users" 
+              className={`sidebar-link ${isActive('/users') ? 'active' : ''}`}
+              title="Users"
+            >
+              <span className="link-icon">👥</span>
+              {!collapsed && <span className="link-text">Users</span>}
+            </Link>
+
+            <Link 
+              to="/categories" 
+              className={`sidebar-link ${isActive('/categories') ? 'active' : ''}`}
+              title="Categories"
+            >
+              <span className="link-icon">📂</span>
+              {!collapsed && <span className="link-text">Categories</span>}
+            </Link>
+          </>
+        )}
+
+        {user && (user.role === 'area_manager' || user.role === 'admin' || user.role === 'super_admin') && (
+          <Link 
+            to="/areas" 
+            className={`sidebar-link ${isActive('/areas') ? 'active' : ''}`}
+            title="Areas"
+          >
+            <span className="link-icon">📍</span>
+            {!collapsed && <span className="link-text">Areas</span>}
+          </Link>
+        )}
+      </div>
+
+      <div className="sidebar-footer">
+        <div className="sidebar-user">
+          <div className="user-avatar">
+            {user?.full_name?.charAt(0).toUpperCase()}
+          </div>
+          {!collapsed && (
+            <div className="user-info">
+              <div className="user-name">{user?.full_name}</div>
+              <div className="user-role">{user?.role?.replace('_', ' ')}</div>
+            </div>
+          )}
+        </div>
+
+        <Link 
+          to="/profile" 
+          className={`sidebar-link ${isActive('/profile') ? 'active' : ''}`}
+          title="Profile"
+        >
+          <span className="link-icon">⚙️</span>
+          {!collapsed && <span className="link-text">Profile</span>}
+        </Link>
+
+        <button 
+          onClick={handleLogout} 
+          className="sidebar-link logout-btn"
+          title="Logout"
+        >
+          <span className="link-icon">🚪</span>
+          {!collapsed && <span className="link-text">Logout</span>}
+        </button>
+      </div>
+    </div>
   );
 };
 

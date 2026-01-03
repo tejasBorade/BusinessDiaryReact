@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { businessService } from '../services';
 import { useAuth } from '../context/AuthContext';
 import './BusinessDetail.css';
@@ -43,27 +43,24 @@ const BusinessDetail = () => {
 
   if (loading) {
     return (
-      <>
-        <Navbar />
+      <PageLayout>
         <div className="loading">Loading business details...</div>
-      </>
+      </PageLayout>
     );
   }
 
   if (error || !business) {
     return (
-      <>
-        <Navbar />
+      <PageLayout>
         <div className="container">
           <div className="alert alert-error">{error || 'Business not found'}</div>
         </div>
-      </>
+      </PageLayout>
     );
   }
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="container">
         <button onClick={() => navigate(-1)} className="btn btn-secondary btn-back">
           ← Back
@@ -162,7 +159,7 @@ const BusinessDetail = () => {
           </div>
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 

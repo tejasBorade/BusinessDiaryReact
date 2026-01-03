@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { areaService } from '../services';
 
 const AreaManagement = () => {
@@ -187,8 +187,7 @@ const AreaManagement = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="container">
         <div className="page-header">
           <h1>Area Management (States & Cities)</h1>
@@ -520,7 +519,7 @@ const AreaManagement = () => {
           }
         }
       `}</style>
-    </>
+    </PageLayout>
   );
 };
 

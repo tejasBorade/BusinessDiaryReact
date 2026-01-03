@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { categoryService } from '../services';
 
 const CategoryManagement = () => {
@@ -116,8 +116,7 @@ const CategoryManagement = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="container">
         <div className="page-header">
           <h1>Category Management</h1>
@@ -417,7 +416,7 @@ const CategoryManagement = () => {
           }
         }
       `}</style>
-    </>
+    </PageLayout>
   );
 };
 

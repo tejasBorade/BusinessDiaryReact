@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import PageLayout from '../components/PageLayout';
 import { businessService, categoryService, areaService } from '../services';
 import './BusinessList.css';
 
@@ -75,8 +75,7 @@ const BusinessList = () => {
   };
 
   return (
-    <>
-      <Navbar />
+    <PageLayout>
       <div className="business-list-container">
         {/* Hero Section */}
         <div className="hero-section">
@@ -137,6 +136,29 @@ const BusinessList = () => {
                   </select>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+
+        {/* Categories Showcase */}
+        <div className="categories-section">
+          <div className="container">
+            <div className="section-header">
+              <h2 className="section-title">Browse by Category</h2>
+              <p className="section-subtitle">Explore businesses in different categories</p>
+            </div>
+            <div className="categories-grid">
+              {categories.map((category) => (
+                <div
+                  key={category.id}
+                  className="category-card"
+                  onClick={() => setFilters({ ...filters, category_id: category.id, page: 1 })}
+                >
+                  <div className="category-icon">{category.icon || '📦'}</div>
+                  <h3 className="category-name">{category.name}</h3>
+                  <p className="category-description">{category.description || 'Browse listings'}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -239,7 +261,7 @@ const BusinessList = () => {
           )}
         </div>
       </div>
-    </>
+    </PageLayout>
   );
 };
 
