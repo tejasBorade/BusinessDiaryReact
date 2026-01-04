@@ -63,6 +63,17 @@ const Navbar = () => {
           </Link>
         )}
 
+        {user && (user.role === 'store_owner' || user.role === 'admin' || user.role === 'super_admin') && (
+          <Link 
+            to="/bookings" 
+            className={`sidebar-link ${isActive('/bookings') ? 'active' : ''}`}
+            title="Bookings"
+          >
+            <span className="link-icon">📅</span>
+            {!collapsed && <span className="link-text">Bookings</span>}
+          </Link>
+        )}
+
         {user && (user.role === 'admin' || user.role === 'super_admin') && (
           <>
             <Link 

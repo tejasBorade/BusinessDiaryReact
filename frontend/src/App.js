@@ -13,6 +13,7 @@ import AreaManagement from './pages/AreaManagement';
 import CategoryManagement from './pages/CategoryManagement';
 import MyBusinesses from './pages/MyBusinesses';
 import Profile from './pages/Profile';
+import BookingManagement from './pages/BookingManagement';
 
 function App() {
   return (
@@ -59,6 +60,12 @@ function App() {
           <Route path="/users" element={
             <PrivateRoute roles={['admin', 'super_admin']}>
               <UserManagement />
+            </PrivateRoute>
+          } />
+          
+          <Route path="/bookings" element={
+            <PrivateRoute roles={['store_owner', 'admin', 'super_admin']}>
+              <BookingManagement />
             </PrivateRoute>
           } />
           

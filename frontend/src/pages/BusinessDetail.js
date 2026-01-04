@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import BookingForm from '../components/BookingForm';
 import './BusinessDetail.css';
 
 const BusinessDetail = () => {
@@ -12,6 +13,7 @@ const BusinessDetail = () => {
   const [loading, setLoading] = useState(true);
   const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
   const [error, setError] = useState('');
+  const [showBookingForm, setShowBookingForm] = useState(false);
 
   useEffect(() => {
     fetchBusinessDetail();
@@ -111,9 +113,17 @@ const BusinessDetail = () => {
               <h1>{business.name}</h1>
               <p className="category-badge">{business.category?.name}</p>
             </div>
-            {business.is_verified && (
-              <span className="verified-badge-large">✓ Verified</span>
-            )}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <button 
+                onClick={() => setShowBookingForm(true)} 
+                className="btn-book-appointment"
+              >
+                📅 Book Appointment
+              </button>
+              {business.is_verified && (
+                <span className="verified-badge-large">✓ Verified</span>
+              )}
+            </div>
           </div>
 
           <div className="business-info-grid">
@@ -198,6 +208,14 @@ const BusinessDetail = () => {
           </div>
         </div>
       </div>
+
+      {showBookingForm && (
+        <BookingForm 
+          business={business}
+          onClose={() => setShowBookingForm(false)}
+          onSuccess={fetchBusinessDetail}
+        />
+      )}
     </div>
   );
 };

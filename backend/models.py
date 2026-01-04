@@ -207,3 +207,41 @@ class EmployeeAssignment(db.Model):
             'role_description': self.role_description,
             'assigned_at': self.assigned_at.isoformat() if self.assigned_at else None
         }
+
+
+class Booking(db.Model):
+    __tablename__ = 'bookings'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    business_id = db.Column(db.Integer, db.ForeignKey('businesses.id'), nullable=False)
+    customer_name = db.Column(db.String(100), nullable=False)
+    customer_email = db.Column(db.String(120), nullable=False)
+    customer_phone = db.Column(db.String(20), nullable=False)
+    booking_date = db.Column(db.Date, nullable=False)
+    booking_time = db.Column(db.String(20), nullable=False)
+    service_type = db.Column(db.String(200))
+    message = db.Column(db.Text)
+    status = db.Column(db.String(20), default='pending')  # pending, confirmed, cancelled, completed
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationship
+    business = db.relationship('Business', backref='bookings', lazy=True)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'business_id': self.business_id,
+            'business': self.business.to_dict() if self.business else None,
+            'customer_name': self.customer_name,
+            'customer_email': self.customer_email,
+            'customer_phone': self.customer_phone,
+            'booking_date': self.booking_date.isoformat() if self.booking_date else None,
+            'booking_time': self.booking_time,
+            'service_type': self.service_type,
+            'message': self.message,
+            'status': self.status,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
+

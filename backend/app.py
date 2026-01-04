@@ -7,6 +7,7 @@ from routes.users import users_bp
 from routes.businesses import businesses_bp
 from routes.areas import areas_bp
 from routes.categories import categories_bp
+from routes.bookings import bookings_bp
 
 def create_app():
     app = Flask(__name__)
@@ -24,6 +25,7 @@ def create_app():
     app.register_blueprint(businesses_bp, url_prefix='/api/businesses')
     app.register_blueprint(areas_bp, url_prefix='/api/areas')
     app.register_blueprint(categories_bp, url_prefix='/api/categories')
+    app.register_blueprint(bookings_bp, url_prefix='/api/bookings')
     
     # Create tables
     with app.app_context():
