@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_cors import CORS
 from config import Config
 from models import db
@@ -19,6 +19,29 @@ def create_app():
     
     # Initialize database
     db.init_app(app)
+    
+    # Root route
+    @app.route('/')
+    def home():
+        return jsonify({
+            'message': 'Business Directory API',
+            'status': 'running',
+            'version': '1.0.0',
+            'endpoints': {
+                'auth': '/api/auth',
+                'users': '/api/users',
+                'businesses': '/api/businesses',
+                'areas': '/api/areas',
+                'categories': '/api/categories',
+                'subcategories': '/api/subcategories',
+                'bookings': '/api/bookings'
+            }
+        })
+    
+    # Health check endpoint
+    @app.route('/api/health')
+    def health_check():
+        return jsonify({'status': 'healthy', 'database': 'connected'})
     
     # Register blueprints
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
