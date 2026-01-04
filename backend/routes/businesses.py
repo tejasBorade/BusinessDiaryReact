@@ -10,6 +10,7 @@ def get_businesses():
         page = request.args.get('page', 1, type=int)
         per_page = request.args.get('per_page', 20, type=int)
         category_id = request.args.get('category_id', type=int)
+        subcategory_id = request.args.get('subcategory_id', type=int)
         area_id = request.args.get('area_id', type=int)
         search = request.args.get('search', '')
         
@@ -17,6 +18,9 @@ def get_businesses():
         
         if category_id:
             query = query.filter_by(category_id=category_id)
+        
+        if subcategory_id:
+            query = query.filter_by(subcategory_id=subcategory_id)
         
         if area_id:
             query = query.filter_by(area_id=area_id)
@@ -29,8 +33,6 @@ def get_businesses():
         businesses = []
         for business in pagination.items:
             business_dict = business.to_dict()
-            business_dict['category'] = business.category.to_dict() if business.category else None
-            business_dict['area'] = business.area.to_dict() if business.area else None
             businesses.append(business_dict)
         
         return jsonify({

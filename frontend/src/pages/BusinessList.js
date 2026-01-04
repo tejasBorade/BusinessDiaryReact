@@ -7,11 +7,15 @@ import './BusinessList.css';
 const BusinessList = () => {
   const [businesses, setBusinesses] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategoryForSubcats, setSelectedCategoryForSubcats] = useState(null);
+  const [displaySubcategories, setDisplaySubcategories] = useState([]);
   const [filters, setFilters] = useState({
     search: '',
     category_id: '',
+    subcategory_id: '',
     area_id: '',
     page: 1,
   });
@@ -31,6 +35,7 @@ const BusinessList = () => {
       const params = {};
       if (filters.search) params.search = filters.search;
       if (filters.category_id) params.category_id = filters.category_id;
+      if (filters.subcategory_id) params.subcategory_id = filters.subcategory_id;
       if (filters.area_id) params.area_id = filters.area_id;
       
       const data = await businessService.getBusinesses(params);
@@ -60,9 +65,50 @@ const BusinessList = () => {
     }
   };
 
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/api/subcategories/category/${categoryId}`);
+      const data = await response.json();
+      setSubcategories(data.subcategories || []);
+    } catch (error) {
+      console.error('Error fetching subcategories:', error);
+      setSubcategories([]);
+    }
+  };
+
+  const handleCategoryCardClick = async (category) => {
+    // If clicking the same category, toggle off
+    if (selectedCategoryForSubcats?.id === category.id) {
+      setSelectedCategoryForSubcats(null);
+      setDisplaySubcategories([]);
+    } else {
+      setSelectedCategoryForSubcats(category);
+      // Fetch subcategories for display
+      try {
+        const response = await fetch(`http://127.0.0.1:5000/api/subcategories/category/${category.id}`);
+        const data = await response.json();
+        setDisplaySubcategories(data.subcategories || []);
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+        setDisplaySubcategories([]);
+      }
+    }
+  };
+
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters({ ...filters, [name]: value, page: 1 });
+    
+    // If category changes, fetch subcategories and reset subcategory filter
+    if (name === 'category_id') {
+      setFilters({ ...filters, [name]: value, subcategory_id: '', page: 1 });
+      if (value) {
+        fetchSubcategories(value);
+      } else {
+        setSubcategories([]);
+      }
+    } else {
+      setFilters({ ...filters, [name]: value, page: 1 });
+    }
   };
 
   const handleSearch = (e) => {
@@ -119,6 +165,25 @@ const BusinessList = () => {
                   </select>
                 </div>
 
+                {filters.category_id && subcategories.length > 0 && (
+                  <div className="filter-group">
+                    <label>🏷️ Subcategory</label>
+                    <select
+                      name="subcategory_id"
+                      value={filters.subcategory_id}
+                      onChange={handleFilterChange}
+                      className="filter-select"
+                    >
+                      <option value="">All Subcategories</option>
+                      {subcategories.map((subcat) => (
+                        <option key={subcat.id} value={subcat.id}>
+                          {subcat.icon} {subcat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
                 <div className="filter-group">
                   <label>📍 Location</label>
                   <select
@@ -151,8 +216,8 @@ const BusinessList = () => {
               {categories.map((category) => (
                 <div
                   key={category.id}
-                  className="category-card"
-                  onClick={() => setFilters({ ...filters, category_id: category.id, page: 1 })}
+                  className={`category-card ${selectedCategoryForSubcats?.id === category.id ? 'active' : ''}`}
+                  onClick={() => handleCategoryCardClick(category)}
                 >
                   <div className="category-icon">{category.icon || '📦'}</div>
                   <h3 className="category-name">{category.name}</h3>
@@ -160,6 +225,42 @@ const BusinessList = () => {
                 </div>
               ))}
             </div>
+
+            {/* Subcategories Section */}
+            {selectedCategoryForSubcats && displaySubcategories.length > 0 && (
+              <div className="subcategories-section">
+                <div className="subcategories-header">
+                  <h3 className="subcategories-title">
+                    {selectedCategoryForSubcats.icon} {selectedCategoryForSubcats.name} - Subcategories
+                  </h3>
+                </div>
+                <div className="subcategories-grid">
+                  {displaySubcategories.map((subcat) => (
+                    <div
+                      key={subcat.id}
+                      className="subcategory-card"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setFilters({ 
+                          ...filters, 
+                          category_id: selectedCategoryForSubcats.id,
+                          subcategory_id: subcat.id, 
+                          page: 1 
+                        });
+                        // Scroll to results
+                        document.querySelector('.business-grid')?.scrollIntoView({ behavior: 'smooth' });
+                      }}
+                    >
+                      <div className="subcategory-icon">{subcat.icon || '🏷️'}</div>
+                      <h4 className="subcategory-name">{subcat.name}</h4>
+                      {subcat.description && (
+                        <p className="subcategory-description">{subcat.description}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

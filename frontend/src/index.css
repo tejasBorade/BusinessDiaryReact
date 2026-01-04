@@ -47,11 +47,11 @@ code {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 10px;
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: 6px 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -60,12 +60,15 @@ code {
 }
 
 .btn-primary {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
 }
 
 .btn-primary:hover {
-  background-color: #0056b3;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
@@ -89,13 +92,13 @@ code {
 .card {
   background: white;
   border-radius: 8px;
-  padding: 20px;
+  padding: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .form-group label {
@@ -107,7 +110,7 @@ code {
 
 .form-control {
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
@@ -115,13 +118,14 @@ code {
 
 .form-control:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
 }
 
 .alert {
-  padding: 12px 20px;
+  padding: 8px 12px;
   border-radius: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .alert-success {

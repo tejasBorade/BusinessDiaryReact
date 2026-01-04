@@ -4,7 +4,17 @@ from datetime import timedelta
 class Config:
     # Database configuration
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    SQLALCHEMY_DATABASE_URI = f'sqlite:///{os.path.join(BASE_DIR, "businessdiary.db")}'
+    
+    # Use PostgreSQL in production, SQLite in development
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    if DATABASE_URL:
+        # Render uses postgres:// but SQLAlchemy needs postgresql://
+        if DATABASE_URL.startswith('postgres://'):
+            DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
+        SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    else:
+        SQLALCHEMY_DATABASE_URI = f'sqlite:///{os.path.join(BASE_DIR, "businessdiary.db")}'
+    
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # JWT configuration
@@ -14,5 +24,5 @@ class Config:
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
     
     # Application configuration
-    DEBUG = True
+    DEBUG = os.environ.get('FLASK_ENV') != 'production'
     TESTING = False

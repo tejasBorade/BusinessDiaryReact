@@ -1,0 +1,45 @@
+# Systemd Service File for Business Directory Backend
+# Save this to: /etc/systemd/system/businessdiary.service
+# Enable: sudo systemctl enable businessdiary
+# Start: sudo systemctl start businessdiary
+# Status: sudo systemctl status businessdiary
+# Logs: sudo journalctl -u businessdiary -f
+
+[Unit]
+Description=Business Directory Flask Backend
+After=network.target postgresql.service
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/businessdiary/backend
+Environment="PATH=/var/www/businessdiary/backend/venv/bin"
+Environment="FLASK_ENV=production"
+
+# Environment Variables (or use EnvironmentFile)
+# EnvironmentFile=/var/www/businessdiary/.env
+
+# Gunicorn command
+ExecStart=/var/www/businessdiary/backend/venv/bin/gunicorn \
+    -c gunicorn_config.py \
+    wsgi:app
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/www/businessdiary/backend/uploads /var/log/gunicorn
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=businessdiary
+
+[Install]
+WantedBy=multi-user.target

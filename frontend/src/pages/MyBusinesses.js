@@ -6,6 +6,7 @@ import './MyBusinesses.css';
 const MyBusinesses = () => {
   const [businesses, setBusinesses] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -14,6 +15,7 @@ const MyBusinesses = () => {
     name: '',
     description: '',
     category_id: '',
+    subcategory_id: '',
     area_id: '',
     address: '',
     phone: '',
@@ -64,12 +66,38 @@ const MyBusinesses = () => {
     }
   };
 
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/api/subcategories/category/${categoryId}`);
+      const data = await response.json();
+      setSubcategories(data.subcategories || []);
+    } catch (error) {
+      console.error('Error fetching subcategories:', error);
+      setSubcategories([]);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    
+    // If category changes, fetch subcategories and reset subcategory
+    if (name === 'category_id') {
+      setFormData({
+        ...formData,
+        [name]: value,
+        subcategory_id: '',
+      });
+      if (value) {
+        fetchSubcategories(value);
+      } else {
+        setSubcategories([]);
+      }
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const openCreateModal = () => {
@@ -78,6 +106,7 @@ const MyBusinesses = () => {
       name: '',
       description: '',
       category_id: '',
+      subcategory_id: '',
       area_id: '',
       address: '',
       phone: '',
@@ -87,6 +116,7 @@ const MyBusinesses = () => {
       image_url: '',
       gallery_images: [],
     });
+    setSubcategories([]);
     setShowModal(true);
     setMessage('');
     setError('');
@@ -98,6 +128,7 @@ const MyBusinesses = () => {
       name: business.name,
       description: business.description,
       category_id: business.category_id,
+      subcategory_id: business.subcategory_id || '',
       area_id: business.area_id,
       address: business.address,
       phone: business.phone || '',
@@ -107,6 +138,10 @@ const MyBusinesses = () => {
       image_url: business.image_url || '',
       gallery_images: business.gallery_images || [],
     });
+    // Fetch subcategories if category exists
+    if (business.category_id) {
+      fetchSubcategories(business.category_id);
+    }
     setShowModal(true);
     setMessage('');
     setError('');
@@ -339,6 +374,25 @@ const MyBusinesses = () => {
                     ))}
                   </select>
                 </div>
+
+                {formData.category_id && subcategories.length > 0 && (
+                  <div className="form-group">
+                    <label>Subcategory</label>
+                    <select
+                      name="subcategory_id"
+                      className="form-control"
+                      value={formData.subcategory_id}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select Subcategory (Optional)</option>
+                      {subcategories.map((subcat) => (
+                        <option key={subcat.id} value={subcat.id}>
+                          {subcat.icon} {subcat.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label>Area *</label>

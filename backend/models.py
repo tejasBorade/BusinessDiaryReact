@@ -93,11 +93,42 @@ class Category(db.Model):
     
     # Relationships
     businesses = db.relationship('Business', backref='category', lazy=True)
+    subcategories = db.relationship('SubCategory', backref='category', lazy=True, cascade='all, delete-orphan')
+    
+    def to_dict(self, include_subcategories=False):
+        result = {
+            'id': self.id,
+            'name': self.name,
+            'description': self.description,
+            'icon': self.icon,
+            'is_active': self.is_active,
+            'created_at': self.created_at.isoformat() if self.created_at else None
+        }
+        if include_subcategories:
+            result['subcategories'] = [sc.to_dict() for sc in self.subcategories if sc.is_active]
+        return result
+
+
+class SubCategory(db.Model):
+    __tablename__ = 'subcategories'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    description = db.Column(db.Text)
+    icon = db.Column(db.String(100))
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    businesses = db.relationship('Business', backref='subcategory', lazy=True)
     
     def to_dict(self):
         return {
             'id': self.id,
             'name': self.name,
+            'category_id': self.category_id,
+            'category_name': self.category.name if self.category else None,
             'description': self.description,
             'icon': self.icon,
             'is_active': self.is_active,
@@ -112,6 +143,7 @@ class Business(db.Model):
     name = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'), nullable=False)
+    subcategory_id = db.Column(db.Integer, db.ForeignKey('subcategories.id'), nullable=True)
     area_id = db.Column(db.Integer, db.ForeignKey('areas.id'), nullable=False)
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
@@ -147,7 +179,11 @@ class Business(db.Model):
             'id': self.id,
             'name': self.name,
             'description': self.description,
+            'category': self.category.to_dict() if self.category else None,
+            'subcategory': self.subcategory.to_dict() if self.subcategory else None,
+            'area': self.area.to_dict() if self.area else None,
             'category_id': self.category_id,
+            'subcategory_id': self.subcategory_id,
             'area_id': self.area_id,
             'owner_id': self.owner_id,
             'address': self.address,

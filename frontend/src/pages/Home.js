@@ -7,11 +7,15 @@ const Home = () => {
   const navigate = useNavigate();
   const [businesses, setBusinesses] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [areas, setAreas] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategoryForSubcats, setSelectedCategoryForSubcats] = useState(null);
+  const [displaySubcategories, setDisplaySubcategories] = useState([]);
   const [filters, setFilters] = useState({
     search: '',
     category_id: '',
+    subcategory_id: '',
     area_id: '',
     page: 1,
   });
@@ -45,12 +49,41 @@ const Home = () => {
     }
   };
 
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:5000/api/subcategories/category/${categoryId}`);
+      setSubcategories(response.data.subcategories || []);
+    } catch (error) {
+      console.error('Error fetching subcategories:', error);
+      setSubcategories([]);
+    }
+  };
+
+  const handleCategoryCardClick = async (category) => {
+    // If clicking the same category, toggle off
+    if (selectedCategoryForSubcats?.id === category.id) {
+      setSelectedCategoryForSubcats(null);
+      setDisplaySubcategories([]);
+    } else {
+      setSelectedCategoryForSubcats(category);
+      // Fetch subcategories for display
+      try {
+        const response = await axios.get(`http://127.0.0.1:5000/api/subcategories/category/${category.id}`);
+        setDisplaySubcategories(response.data.subcategories || []);
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+        setDisplaySubcategories([]);
+      }
+    }
+  };
+
   const fetchBusinesses = async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
       if (filters.search) params.append('search', filters.search);
       if (filters.category_id) params.append('category_id', filters.category_id);
+      if (filters.subcategory_id) params.append('subcategory_id', filters.subcategory_id);
       if (filters.area_id) params.append('area_id', filters.area_id);
       params.append('page', filters.page);
 
@@ -128,8 +161,8 @@ const Home = () => {
             {categories.map((category) => (
               <div
                 key={category.id}
-                className="category-card"
-                onClick={() => setFilters({ ...filters, category_id: category.id, page: 1 })}
+                className={`category-card ${selectedCategoryForSubcats?.id === category.id ? 'active' : ''}`}
+                onClick={() => handleCategoryCardClick(category)}
               >
                 <div className="category-icon">{category.icon}</div>
                 <h3 className="category-name">{category.name}</h3>
@@ -137,6 +170,42 @@ const Home = () => {
               </div>
             ))}
           </div>
+
+          {/* Subcategories Section */}
+          {selectedCategoryForSubcats && displaySubcategories.length > 0 && (
+            <div className="subcategories-section">
+              <div className="subcategories-header">
+                <h3 className="subcategories-title">
+                  {selectedCategoryForSubcats.icon} {selectedCategoryForSubcats.name} - Subcategories
+                </h3>
+              </div>
+              <div className="subcategories-grid">
+                {displaySubcategories.map((subcat) => (
+                  <div
+                    key={subcat.id}
+                    className="subcategory-card"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setFilters({ 
+                        ...filters, 
+                        category_id: selectedCategoryForSubcats.id,
+                        subcategory_id: subcat.id, 
+                        page: 1 
+                      });
+                      // Scroll to results
+                      document.querySelector('.businesses-section')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    <div className="subcategory-icon">{subcat.icon || '🏷️'}</div>
+                    <h4 className="subcategory-name">{subcat.name}</h4>
+                    {subcat.description && (
+                      <p className="subcategory-description">{subcat.description}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -160,7 +229,15 @@ const Home = () => {
                 <label>📂 Category</label>
                 <select
                   value={filters.category_id}
-                  onChange={(e) => setFilters({ ...filters, category_id: e.target.value, page: 1 })}
+                  onChange={(e) => {
+                    const categoryId = e.target.value;
+                    setFilters({ ...filters, category_id: categoryId, subcategory_id: '', page: 1 });
+                    if (categoryId) {
+                      fetchSubcategories(categoryId);
+                    } else {
+                      setSubcategories([]);
+                    }
+                  }}
                   className="form-control"
                 >
                   <option value="">All Categories</option>
@@ -171,6 +248,24 @@ const Home = () => {
                   ))}
                 </select>
               </div>
+
+              {filters.category_id && subcategories.length > 0 && (
+                <div className="filter-group">
+                  <label>🏷️ Subcategory</label>
+                  <select
+                    value={filters.subcategory_id}
+                    onChange={(e) => setFilters({ ...filters, subcategory_id: e.target.value, page: 1 })}
+                    className="form-control"
+                  >
+                    <option value="">All Subcategories</option>
+                    {subcategories.map((subcat) => (
+                      <option key={subcat.id} value={subcat.id}>
+                        {subcat.icon} {subcat.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div className="filter-group">
                 <label>📍 Location</label>

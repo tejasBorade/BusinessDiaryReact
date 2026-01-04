@@ -38,9 +38,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 24px;
+  padding: 15px;
   border-bottom: 2px solid #f0f0f0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   border-radius: 16px 16px 0 0;
 }
@@ -72,13 +72,13 @@
 }
 
 .business-info {
-  padding: 20px 24px;
+  padding: 12px 15px;
   background: #f8f9ff;
   border-bottom: 1px solid #e0e0e0;
 }
 
 .business-info h3 {
-  margin: 0 0 8px 0;
+  margin: 0 0 5px 0;
   color: #2c3e50;
   font-size: 20px;
 }
@@ -90,11 +90,11 @@
 }
 
 form {
-  padding: 24px;
+  padding: 15px;
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .form-row {
@@ -127,7 +127,7 @@ form {
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #10b981;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -178,7 +178,7 @@ form {
 }
 
 .btn-submit {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
@@ -221,3 +221,4 @@ form {
     width: 100%;
   }
 }
+

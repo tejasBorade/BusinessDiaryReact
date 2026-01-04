@@ -7,9 +7,10 @@ categories_bp = Blueprint('categories', __name__)
 @categories_bp.route('', methods=['GET'])
 def get_categories():
     try:
+        include_subcategories = request.args.get('include_subcategories', 'false').lower() == 'true'
         categories = Category.query.filter_by(is_active=True).all()
         return jsonify({
-            'categories': [category.to_dict() for category in categories]
+            'categories': [category.to_dict(include_subcategories=include_subcategories) for category in categories]
         }), 200
     except Exception as e:
         return jsonify({'message': 'Failed to fetch categories', 'error': str(e)}), 500
@@ -18,8 +19,9 @@ def get_categories():
 @categories_bp.route('/<int:category_id>', methods=['GET'])
 def get_category(category_id):
     try:
+        include_subcategories = request.args.get('include_subcategories', 'false').lower() == 'true'
         category = Category.query.get_or_404(category_id)
-        category_dict = category.to_dict()
+        category_dict = category.to_dict(include_subcategories=include_subcategories)
         category_dict['business_count'] = len(category.businesses)
         return jsonify({'category': category_dict}), 200
     except Exception as e:

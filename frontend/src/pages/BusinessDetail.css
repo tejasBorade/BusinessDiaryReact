@@ -2,14 +2,14 @@
 @import './Home.css';
 
 .btn-back {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .btn-book-appointment {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   border: none;
-  padding: 12px 24px;
+  padding: 8px 18px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
@@ -26,7 +26,7 @@
 .business-detail-card {
   background: white;
   border-radius: 8px;
-  padding: 30px;
+  padding: 15px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -34,8 +34,8 @@
   display: flex;
   justify-content: space-between;
   align-items: start;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
+  margin-bottom: 15px;
+  padding-bottom: 12px;
   border-bottom: 2px solid #f0f0f0;
 }
 
@@ -48,7 +48,7 @@
   display: inline-block;
   background-color: #e3f2fd;
   color: #1976d2;
-  padding: 6px 15px;
+  padding: 4px 10px;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 500;
@@ -57,7 +57,7 @@
 .verified-badge-large {
   background-color: #28a745;
   color: white;
-  padding: 8px 20px;
+  padding: 6px 15px;
   border-radius: 20px;
   font-size: 16px;
   font-weight: 500;
@@ -66,27 +66,27 @@
 .business-info-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
 .info-section {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .info-section h3 {
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 20px;
 }
 
 .info-section p {
-  margin: 10px 0;
+  margin: 6px 0;
   line-height: 1.6;
 }
 
 .info-section a {
-  color: #007bff;
+  color: #10b981;
   text-decoration: none;
 }
 
@@ -98,21 +98,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px;
+  padding: 12px;
   background-color: #fff9e6;
   border-radius: 8px;
 }
 
 .rating-number {
-  font-size: 48px;
+  font-size: 40px;
   font-weight: bold;
   color: #ff9800;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
 .rating-stars {
-  font-size: 24px;
-  margin-bottom: 10px;
+  font-size: 20px;
+  margin-bottom: 6px;
 }
 
 .review-count {
@@ -175,3 +175,4 @@
     grid-template-columns: 1fr;
   }
 }
+
