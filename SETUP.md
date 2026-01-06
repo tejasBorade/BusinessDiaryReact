@@ -62,8 +62,8 @@ The frontend will open automatically at: http://localhost:3000
 
 ## 🔑 Default Login Credentials
 
-- **Email:** superadmin@businessdiary.com
-- **Password:** Admin@123
+- **Email:** ******@businessdiary.com
+- **Password:** *******
 
 ---
 
