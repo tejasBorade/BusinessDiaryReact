@@ -97,6 +97,6 @@ Write-Host "   cd frontend" -ForegroundColor White
 Write-Host "   npm start" -ForegroundColor White
 Write-Host ""
 Write-Host "Default Login:" -ForegroundColor Cyan
-Write-Host "   Email: superadmin@businessdiary.com" -ForegroundColor White
-Write-Host "   Password: Admin@123" -ForegroundColor White
+Write-Host "   Email: *******@businessdiary.com" -ForegroundColor White
+Write-Host "   Password: ******" -ForegroundColor White
 Write-Host ""
