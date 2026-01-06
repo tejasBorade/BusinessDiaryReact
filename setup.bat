@@ -95,7 +95,7 @@ echo    cd frontend
 echo    npm start
 echo.
 echo Default Login:
-echo    Email: superadmin@businessdiary.com
-echo    Password: Admin@123
+echo    Email: ********@businessdiary.com
+echo    Password: ******
 echo.
 pause
