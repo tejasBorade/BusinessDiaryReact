@@ -59,12 +59,12 @@ def create_app():
         from models import User
         from werkzeug.security import generate_password_hash
         
-        super_admin = User.query.filter_by(email='superadmin@businessdiary.com').first()
+        super_admin = User.query.filter_by(email='*********@businessdiary.com').first()
         if not super_admin:
             super_admin = User(
                 email='superadmin@businessdiary.com',
                 username='superadmin',
-                password=generate_password_hash('Admin@123'),
+                password=generate_password_hash('********'),
                 full_name='Super Admin',
                 role='super_admin',
                 is_active=True
