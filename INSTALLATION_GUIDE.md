@@ -168,8 +168,8 @@ app.run(debug=True, host='0.0.0.0', port=5001)  # Changed to 5001
 
 1. **Login at:** http://localhost:3000/login
 2. **Credentials:**
-   - Email: `superadmin@businessdiary.com`
-   - Password: `Admin@123`
+   - Email: `*******@businessdiary.com`
+   - Password: `********`
 3. **Explore:**
    - Dashboard
    - Business listings
