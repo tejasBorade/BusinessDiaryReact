@@ -29,7 +29,7 @@ git branch -M main
 git push -u origin main
 ```
 
-Replace `YOUR_USERNAME` with your actual GitHub username.
+Replace `Y_USERNAME` with your actual GitHub username.
 
 ## Step 3: Enter GitHub Credentials
 
