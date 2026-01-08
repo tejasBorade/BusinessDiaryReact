@@ -5,6 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import BookingForm from '../components/BookingForm';
 import './BusinessDetail.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://businessdiary-api.tejasborade9594.workers.dev';
+
 const BusinessDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ const BusinessDetail = () => {
 
   const fetchBusinessDetail = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:5000/api/businesses/${id}`);
+      const response = await axios.get(`${API_BASE_URL}/api/businesses/${id}`);
       setBusiness(response.data.business);
     } catch (error) {
       console.error('Error fetching business:', error);
@@ -35,7 +37,7 @@ const BusinessDetail = () => {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(`http://127.0.0.1:5000/api/businesses/${id}/rate`, {
+      await axios.post(`${API_BASE_URL}/api/businesses/${id}/rate`, {
         rating: reviewForm.rating
       });
       alert('Thank you for your rating!');
