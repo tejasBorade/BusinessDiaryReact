@@ -139,14 +139,21 @@ export class BusinessController {
     try {
       const data = await request.json();
       
+      // Convert empty strings to null for optional fields
+      const subcategoryId = data.subcategory_id || null;
+      const email = data.email || null;
+      const website = data.website || null;
+      const imageUrl = data.image_url || null;
+      const ownerId = data.owner_id || null;
+      
       const result = await this.db.prepare(
         `INSERT INTO businesses 
         (name, description, address, phone, email, website, image_url, category_id, subcategory_id, area_id, owner_id) 
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       ).bind(
         data.name, data.description, data.address, data.phone, 
-        data.email, data.website, data.image_url || null, data.category_id, data.subcategory_id,
-        data.area_id, data.owner_id
+        email, website, imageUrl, data.category_id, subcategoryId,
+        data.area_id, ownerId
       ).run();
 
       const business = await this.db.prepare(
@@ -203,6 +210,12 @@ export class BusinessController {
     try {
       const data = await request.json();
       
+      // Convert empty strings to null for optional fields
+      const subcategoryId = data.subcategory_id || null;
+      const email = data.email || null;
+      const website = data.website || null;
+      const imageUrl = data.image_url || null;
+      
       await this.db.prepare(
         `UPDATE businesses 
         SET name = ?, description = ?, address = ?, phone = ?, email = ?, website = ?, 
@@ -210,7 +223,7 @@ export class BusinessController {
         WHERE id = ?`
       ).bind(
         data.name, data.description, data.address, data.phone, 
-        data.email, data.website, data.image_url, data.category_id, data.subcategory_id,
+        email, website, imageUrl, data.category_id, subcategoryId,
         data.area_id, id
       ).run();
 
