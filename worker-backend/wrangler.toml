@@ -4,8 +4,8 @@ compatibility_date = "2026-01-08"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "businessdiary"
-database_id = "" # Will be filled after creating D1 database
+database_name = "businessdiarydb"
+database_id = "f18a5ca0-42f3-4854-a359-fb9920f3a44c"
 
 [vars]
 JWT_SECRET = "your-secret-key-change-in-production"

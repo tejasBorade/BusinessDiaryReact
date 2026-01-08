@@ -9,12 +9,12 @@
 
 ```bash
 cd worker-backend
-wrangler d1 create businessdiary
+wrangler d1 create businessdiarydb
 ```
 
 This will output something like:
 ```
-✅ Successfully created DB 'businessdiary'
+✅ Successfully created DB 'businessdiarydb'
 database_id = "abc123-def456-ghi789"
 ```
 
@@ -22,14 +22,14 @@ Copy the `database_id` and update `worker-backend/wrangler.toml`:
 ```toml
 [[d1_databases]]
 binding = "DB"
-database_name = "businessdiary"
+database_name = "businessdiarydb"
 database_id = "abc123-def456-ghi789"  # <-- Paste your database_id here
 ```
 
 ## Step 2: Initialize Database Schema
 
 ```bash
-wrangler d1 execute businessdiary --file=schema.sql
+wrangler d1 execute businessdiarydb --file=schema.sql
 ```
 
 ## Step 3: Seed Sample Data (Optional)
@@ -56,7 +56,7 @@ INSERT INTO areas (name, city, state, pincode) VALUES
 
 Run seed:
 ```bash
-wrangler d1 execute businessdiary --file=seed.sql
+wrangler d1 execute businessdiarydb --file=seed.sql
 ```
 
 ## Step 4: Install Dependencies
@@ -97,31 +97,31 @@ Update Cloudflare Pages environment variable:
 
 ```bash
 # List all tables
-wrangler d1 execute businessdiary --command "SELECT name FROM sqlite_master WHERE type='table'"
+wrangler d1 execute businessdiarydb --command "SELECT name FROM sqlite_master WHERE type='table'"
 
 # Query users
-wrangler d1 execute businessdiary --command "SELECT * FROM users"
+wrangler d1 execute businessdiarydb --command "SELECT * FROM users"
 
 # Query businesses
-wrangler d1 execute businessdiary --command "SELECT * FROM businesses LIMIT 10"
+wrangler d1 execute businessdiarydb --command "SELECT * FROM businesses LIMIT 10"
 ```
 
 ## Database Management
 
 ### Backup Database
 ```bash
-wrangler d1 export businessdiary --output=backup.sql
+wrangler d1 export businessdiarydb --output=backup.sql
 ```
 
 ### Restore Database
 ```bash
-wrangler d1 execute businessdiary --file=backup.sql
+wrangler d1 execute businessdiarydb --file=backup.sql
 ```
 
 ### Reset Database
 ```bash
-wrangler d1 execute businessdiary --command "DROP TABLE IF EXISTS users"
-wrangler d1 execute businessdiary --file=schema.sql
+wrangler d1 execute businessdiarydb --command "DROP TABLE IF EXISTS users"
+wrangler d1 execute businessdiarydb --file=schema.sql
 ```
 
 ## Monitoring
