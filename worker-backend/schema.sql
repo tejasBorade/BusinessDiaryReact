@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     password TEXT NOT NULL,
     full_name TEXT NOT NULL,
     phone TEXT,
+    profile_photo TEXT,
     role TEXT NOT NULL DEFAULT 'store_owner',
     is_active INTEGER DEFAULT 1,
     created_at TEXT DEFAULT (datetime('now'))
@@ -48,6 +49,7 @@ CREATE TABLE IF NOT EXISTS businesses (
     phone TEXT,
     email TEXT,
     website TEXT,
+    image_url TEXT,
     category_id INTEGER,
     subcategory_id INTEGER,
     area_id INTEGER,
