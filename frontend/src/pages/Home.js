@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://businessdiary-api.onrender.com';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://businessdiaryreact.tejasborade9594.workers.dev';
 
 const Home = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://businessdiary-api.onrender.com/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://businessdiaryreact.tejasborade9594.workers.dev';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
