@@ -2,7 +2,7 @@ import api from './api';
 
 export const authService = {
   login: async (email, password) => {
-    const response = await api.post('/auth/login', { email, password });
+    const response = await api.post('/api/auth/login', { email, password });
     if (response.data.token) {
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -11,7 +11,7 @@ export const authService = {
   },
 
   register: async (userData) => {
-    const response = await api.post('/auth/register', userData);
+    const response = await api.post('/api/auth/register', userData);
     return response.data;
   },
 
@@ -26,135 +26,135 @@ export const authService = {
   },
 
   verifyToken: async () => {
-    const response = await api.get('/auth/verify');
+    const response = await api.get('/api/auth/verify');
     return response.data;
   },
 };
 
 export const userService = {
   getUsers: async (params) => {
-    const response = await api.get('/users', { params });
+    const response = await api.get('/api/users', { params });
     return response.data;
   },
 
   getUser: async (id) => {
-    const response = await api.get(`/users/${id}`);
+    const response = await api.get(`/api/users/${id}`);
     return response.data;
   },
 
   updateUser: async (id, userData) => {
-    const response = await api.put(`/users/${id}`, userData);
+    const response = await api.put(`/api/users/${id}`, userData);
     return response.data;
   },
 
   deleteUser: async (id) => {
-    const response = await api.delete(`/users/${id}`);
+    const response = await api.delete(`/api/users/${id}`);
     return response.data;
   },
 
   getUserStats: async () => {
-    const response = await api.get('/users/stats');
+    const response = await api.get('/api/users/stats');
     return response.data;
   },
 };
 
 export const businessService = {
   getBusinesses: async (params) => {
-    const response = await api.get('/businesses', { params });
+    const response = await api.get('/api/businesses', { params });
     return response.data;
   },
 
   getMyBusinesses: async () => {
-    const response = await api.get('/businesses/my');
+    const response = await api.get('/api/businesses/my');
     return response.data;
   },
 
   getBusiness: async (id) => {
-    const response = await api.get(`/businesses/${id}`);
+    const response = await api.get(`/api/businesses/${id}`);
     return response.data;
   },
 
   createBusiness: async (businessData) => {
-    const response = await api.post('/businesses', businessData);
+    const response = await api.post('/api/businesses', businessData);
     return response.data;
   },
 
   updateBusiness: async (id, businessData) => {
-    const response = await api.put(`/businesses/${id}`, businessData);
+    const response = await api.put(`/api/businesses/${id}`, businessData);
     return response.data;
   },
 
   deleteBusiness: async (id) => {
-    const response = await api.delete(`/businesses/${id}`);
+    const response = await api.delete(`/api/businesses/${id}`);
     return response.data;
   },
 
   addReview: async (id, reviewData) => {
-    const response = await api.post(`/businesses/${id}/reviews`, reviewData);
+    const response = await api.post(`/api/businesses/${id}/reviews`, reviewData);
     return response.data;
   },
 };
 
 export const areaService = {
   getAreas: async (params) => {
-    const response = await api.get('/areas', { params });
+    const response = await api.get('/api/areas', { params });
     return response.data;
   },
 
   getArea: async (id) => {
-    const response = await api.get(`/areas/${id}`);
+    const response = await api.get(`/api/areas/${id}`);
     return response.data;
   },
 
   createArea: async (areaData) => {
-    const response = await api.post('/areas', areaData);
+    const response = await api.post('/api/areas', areaData);
     return response.data;
   },
 
   updateArea: async (id, areaData) => {
-    const response = await api.put(`/areas/${id}`, areaData);
+    const response = await api.put(`/api/areas/${id}`, areaData);
     return response.data;
   },
 
   deleteArea: async (id) => {
-    const response = await api.delete(`/areas/${id}`);
+    const response = await api.delete(`/api/areas/${id}`);
     return response.data;
   },
 
   assignManager: async (areaId, userId) => {
-    const response = await api.post(`/areas/${areaId}/managers`, { user_id: userId });
+    const response = await api.post(`/api/areas/${areaId}/managers`, { user_id: userId });
     return response.data;
   },
 
   removeManager: async (areaId, userId) => {
-    const response = await api.delete(`/areas/${areaId}/managers/${userId}`);
+    const response = await api.delete(`/api/areas/${areaId}/managers/${userId}`);
     return response.data;
   },
 };
 
 export const categoryService = {
   getCategories: async () => {
-    const response = await api.get('/categories');
+    const response = await api.get('/api/categories');
     return response.data;
   },
 
   getCategory: async (id) => {
-    const response = await api.get(`/categories/${id}`);
+    const response = await api.get(`/api/categories/${id}`);
     return response.data;
   },
 
   createCategory: async (categoryData) => {
-    const response = await api.post('/categories', categoryData);
+    const response = await api.post('/api/categories', categoryData);
     return response.data;
   },
 
   updateCategory: async (id, categoryData) => {
-    const response = await api.put(`/categories/${id}`, categoryData);
+    const response = await api.put(`/api/categories/${id}`, categoryData);
     return response.data;
   },
 
   deleteCategory: async (id) => {
-    const response = await api.delete(`/categories/${id}`);
+    const response = await api.delete(`/api/categories/${id}`);
     return response.data;
   },
 };
