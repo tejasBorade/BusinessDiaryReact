@@ -1,0 +1,15 @@
+{
+	"name": "businessdiaryreact",
+	"compatibility_date": "2026-01-07",
+	"assets": {
+		"directory": "./frontend/build"
+	},
+	"d1_databases": [
+		{
+			"binding": "businessdiarydb",
+			"database_name": "businessdiarydb",
+			"database_id": "f18a5ca0-42f3-4854-a359-fb9920f3a44c",
+			"remote": true
+		}
+	]
+}
