@@ -13,5 +13,5 @@ database_id = "f18a5ca0-42f3-4854-a359-fb9920f3a44c"
 # binding = "IMAGES"
 # bucket_name = "businessdiary-images"
 
-[vars]
-JWT_SECRET = "your-secret-key-change-in-production"
+# Secrets (set via: wrangler secret put JWT_SECRET)
+# JWT_SECRET will be set as a secret, not a var
