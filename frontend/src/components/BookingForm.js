@@ -28,7 +28,7 @@ const BookingForm = ({ business, onClose, onSuccess }) => {
     setError('');
 
     try {
-      const response = await axios.post('http://127.0.0.1:5000/api/bookings', {
+      const response = await axios.post('https://businessdiary-api.tejasborade9594.workers.dev/api/bookings', {
         business_id: business.id,
         ...formData
       });

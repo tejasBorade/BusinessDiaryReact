@@ -15,7 +15,7 @@ const BookingManagement = () => {
   const fetchBookings = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://127.0.0.1:5000/api/bookings', {
+      const response = await axios.get('https://businessdiary-api.tejasborade9594.workers.dev/api/bookings', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(response.data.bookings);
@@ -31,7 +31,7 @@ const BookingManagement = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.put(
-        `http://127.0.0.1:5000/api/bookings/${bookingId}`,
+        `https://businessdiary-api.tejasborade9594.workers.dev/api/bookings/${bookingId}`,
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );

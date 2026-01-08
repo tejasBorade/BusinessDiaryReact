@@ -50,8 +50,8 @@ const CategoryManagement = () => {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://127.0.0.1:5000/api/categories?include_subcategories=true');
-      setCategories(response.data.categories || []);
+      const response = await categoryService.getCategories({ include_subcategories: true });
+      setCategories(response.categories || []);
       setError('');
     } catch (err) {
       setError('Failed to fetch categories');
@@ -63,11 +63,8 @@ const CategoryManagement = () => {
 
   const fetchSubcategories = async (categoryId) => {
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.get(`http://127.0.0.1:5000/api/subcategories/category/${categoryId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setSubcategories(response.data.subcategories || []);
+      const response = await categoryService.getSubcategories(categoryId);
+      setSubcategories(response.subcategories || []);
     } catch (err) {
       console.error('Error fetching subcategories:', err);
     }
@@ -138,16 +135,11 @@ const CategoryManagement = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
       if (editingCategory) {
-        await axios.put(`http://127.0.0.1:5000/api/categories/${editingCategory.id}`, formData, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await categoryService.updateCategory(editingCategory.id, formData);
         setMessage('Category updated successfully!');
       } else {
-        await axios.post('http://127.0.0.1:5000/api/categories', formData, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await categoryService.createCategory(formData);
         setMessage('Category created successfully!');
       }
       setTimeout(() => {
@@ -170,16 +162,11 @@ const CategoryManagement = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
       if (editingSubcategory) {
-        await axios.put(`http://127.0.0.1:5000/api/subcategories/${editingSubcategory.id}`, subcategoryFormData, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await categoryService.updateSubcategory(editingSubcategory.id, subcategoryFormData);
         setMessage('Subcategory updated successfully!');
       } else {
-        await axios.post('http://127.0.0.1:5000/api/subcategories', subcategoryFormData, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await categoryService.createSubcategory(subcategoryFormData);
         setMessage('Subcategory created successfully!');
       }
       setTimeout(() => {
@@ -198,10 +185,7 @@ const CategoryManagement = () => {
     }
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.delete(`http://127.0.0.1:5000/api/subcategories/${subcategoryId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      await categoryService.deleteSubcategory(subcategoryId);
       setMessage('Subcategory deleted successfully!');
       fetchSubcategories(selectedCategory.id);
       fetchCategories();

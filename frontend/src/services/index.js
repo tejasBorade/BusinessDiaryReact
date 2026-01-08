@@ -133,8 +133,8 @@ export const areaService = {
 };
 
 export const categoryService = {
-  getCategories: async () => {
-    const response = await api.get('/api/categories');
+  getCategories: async (params) => {
+    const response = await api.get('/api/categories', { params });
     return response.data;
   },
 
@@ -155,6 +155,26 @@ export const categoryService = {
 
   deleteCategory: async (id) => {
     const response = await api.delete(`/api/categories/${id}`);
+    return response.data;
+  },
+
+  getSubcategories: async (categoryId) => {
+    const response = await api.get(`/api/subcategories/category/${categoryId}`);
+    return response.data;
+  },
+
+  createSubcategory: async (subcategoryData) => {
+    const response = await api.post('/api/subcategories', subcategoryData);
+    return response.data;
+  },
+
+  updateSubcategory: async (id, subcategoryData) => {
+    const response = await api.put(`/api/subcategories/${id}`, subcategoryData);
+    return response.data;
+  },
+
+  deleteSubcategory: async (id) => {
+    const response = await api.delete(`/api/subcategories/${id}`);
     return response.data;
   },
 };

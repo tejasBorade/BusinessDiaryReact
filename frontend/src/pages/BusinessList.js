@@ -68,7 +68,7 @@ const BusinessList = () => {
 
   const fetchSubcategories = async (categoryId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/subcategories/category/${categoryId}`);
+      const response = await fetch(`https://businessdiary-api.tejasborade9594.workers.dev/api/subcategories/category/${categoryId}`);
       const data = await response.json();
       setSubcategories(data.subcategories || []);
     } catch (error) {
@@ -86,7 +86,7 @@ const BusinessList = () => {
       setSelectedCategoryForSubcats(category);
       // Fetch subcategories for display
       try {
-        const response = await fetch(`http://127.0.0.1:5000/api/subcategories/category/${category.id}`);
+        const response = await fetch(`https://businessdiary-api.tejasborade9594.workers.dev/api/subcategories/category/${category.id}`);
         const data = await response.json();
         setDisplaySubcategories(data.subcategories || []);
       } catch (error) {
