@@ -90,4 +90,20 @@ export class AuthController {
       );
     }
   }
+
+  async verify(request) {
+    try {
+      // Token verification is handled by middleware
+      // This endpoint just confirms the token is valid
+      return new Response(
+        JSON.stringify({ valid: true }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
 }

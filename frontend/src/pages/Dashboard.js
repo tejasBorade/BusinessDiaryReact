@@ -17,8 +17,23 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       if (user.role === 'super_admin' || user.role === 'admin') {
-        const userStats = await userService.getUserStats();
-        setStats(userStats);
+        const response = await userService.getUserStats();
+        // Transform the stats data to expected format
+        const statsData = {
+          role_counts: {},
+          total_users: 0,
+          active_users: 0,
+          inactive_users: 0
+        };
+        
+        if (response.stats && Array.isArray(response.stats)) {
+          response.stats.forEach(stat => {
+            statsData.role_counts[stat.role] = stat.count;
+            statsData.total_users += stat.count;
+          });
+        }
+        
+        setStats(statsData);
       }
       setLoading(false);
     } catch (error) {
@@ -75,15 +90,15 @@ const Dashboard = () => {
             <>
               <div className="dashboard-card stats-card">
                 <h3>Total Users</h3>
-                <div className="stat-number">{stats.total_users}</div>
+                <div className="stat-number">{stats.total_users || 0}</div>
                 <div className="stat-subtitle">
-                  {stats.active_users} active, {stats.inactive_users} inactive
+                  {stats.active_users || 0} active, {stats.inactive_users || 0} inactive
                 </div>
               </div>
 
               <div className="dashboard-card">
                 <h3>Users by Role</h3>
-                {Object.entries(stats.role_counts).map(([role, count]) => (
+                {stats.role_counts && Object.entries(stats.role_counts).map(([role, count]) => (
                   <div className="info-row" key={role}>
                     <span className="label">{getRoleDisplayName(role)}:</span>
                     <span>{count}</span>

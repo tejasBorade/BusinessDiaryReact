@@ -30,6 +30,9 @@ export class Router {
     if (path === '/api/auth/register' && method === 'POST') {
       return this.authController.register(request);
     }
+    if (path === '/api/auth/verify' && method === 'GET') {
+      return this.authController.verify(request);
+    }
 
     // Categories routes
     if (path === '/api/categories' && method === 'GET') {
