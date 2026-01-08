@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PageLayout from '../components/PageLayout';
 import { useAuth } from '../context/AuthContext';
-import { userService, businessService } from '../services';
+import { userService } from '../services';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -11,6 +11,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchDashboardData = async () => {

@@ -27,6 +27,7 @@ const BusinessList = () => {
 
   useEffect(() => {
     fetchBusinesses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const fetchBusinesses = async () => {

@@ -4,7 +4,6 @@ import axios from 'axios';
 import './BookingManagement.css';
 
 const BookingManagement = () => {
-  const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, pending, confirmed, cancelled, completed

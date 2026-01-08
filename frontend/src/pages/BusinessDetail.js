@@ -17,6 +17,7 @@ const BusinessDetail = () => {
 
   useEffect(() => {
     fetchBusinessDetail();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchBusinessDetail = async () => {

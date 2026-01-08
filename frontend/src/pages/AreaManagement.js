@@ -50,6 +50,7 @@ const AreaManagement = () => {
 
   useEffect(() => {
     fetchAreas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterState]);
 
   const fetchAreas = async () => {
