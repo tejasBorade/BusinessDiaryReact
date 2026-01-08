@@ -110,10 +110,4 @@ export class Router {
       return new Response('Error serving image', { status: 500 });
     }
   }
-
-    return new Response(JSON.stringify({ error: 'Not found' }), {
-      status: 404,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
 }
