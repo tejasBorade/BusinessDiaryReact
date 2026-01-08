@@ -50,9 +50,10 @@ export class Router {
     if (path === '/api/businesses' && method === 'POST') {
       return this.businessController.create(request);
     }
-    if (path === '/api/businesses/upload-image' && method === 'POST') {
-      return this.businessController.uploadImage(request);
-    }
+    // Uncomment when R2 is enabled
+    // if (path === '/api/businesses/upload-image' && method === 'POST') {
+    //   return this.businessController.uploadImage(request);
+    // }
     if (path.match(/^\/api\/businesses\/\d+$/) && method === 'GET') {
       const id = path.split('/').pop();
       return this.businessController.getById(id);
@@ -70,11 +71,11 @@ export class Router {
       return this.areaController.create(request);
     }
 
-    // Image serving route
-    if (path.match(/^\/images\/.+$/) && method === 'GET') {
-      const filename = path.split('/images/')[1];
-      return this.serveImage(filename);
-    }
+    // Image serving route (requires R2 enabled)
+    // if (path.match(/^\/images\/.+$/) && method === 'GET') {
+    //   const filename = path.split('/images/')[1];
+    //   return this.serveImage(filename);
+    // }
 
     // Bookings routes
     if (path === '/api/bookings' && method === 'GET') {
@@ -92,22 +93,23 @@ export class Router {
     return new Response('Not Found', { status: 404 });
   }
 
-  async serveImage(filename) {
-    try {
-      const object = await this.env.IMAGES.get(filename);
-      
-      if (!object) {
-        return new Response('Image not found', { status: 404 });
-      }
+  // Uncomment when R2 is enabled
+  // async serveImage(filename) {
+  //   try {
+  //     const object = await this.env.IMAGES.get(filename);
+  //     
+  //     if (!object) {
+  //       return new Response('Image not found', { status: 404 });
+  //     }
 
-      const headers = new Headers();
-      object.writeHttpMetadata(headers);
-      headers.set('etag', object.httpEtag);
-      headers.set('cache-control', 'public, max-age=31536000');
+  //     const headers = new Headers();
+  //     object.writeHttpMetadata(headers);
+  //     headers.set('etag', object.httpEtag);
+  //     headers.set('cache-control', 'public, max-age=31536000');
 
-      return new Response(object.body, { headers });
-    } catch (error) {
-      return new Response('Error serving image', { status: 500 });
-    }
-  }
+  //     return new Response(object.body, { headers });
+  //   } catch (error) {
+  //     return new Response('Error serving image', { status: 500 });
+  //   }
+  // }
 }
