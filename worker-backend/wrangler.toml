@@ -13,5 +13,8 @@ database_id = "f18a5ca0-42f3-4854-a359-fb9920f3a44c"
 # binding = "IMAGES"
 # bucket_name = "businessdiary-images"
 
-# Secrets (set via: wrangler secret put JWT_SECRET)
-# JWT_SECRET will be set as a secret, not a var
+# JWT_SECRET should be set via Cloudflare Workers Secrets
+# For now, keeping it as var for compatibility
+# Run: wrangler secret put JWT_SECRET (then remove this line)
+[vars]
+JWT_SECRET = "temporary-secret-please-change-via-wrangler-secret-put"
