@@ -89,6 +89,9 @@ export class Router {
       return this.userController.getAll(request);
     }
 
+    return new Response('Not Found', { status: 404 });
+  }
+
   async serveImage(filename) {
     try {
       const object = await this.env.IMAGES.get(filename);
