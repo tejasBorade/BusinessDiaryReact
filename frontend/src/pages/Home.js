@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Home.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://businessdiary-api.onrender.com';
+
 const Home = () => {
   const navigate = useNavigate();
   const [businesses, setBusinesses] = useState([]);
@@ -34,7 +36,7 @@ const Home = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/api/categories');
+      const response = await axios.get(`${API_BASE_URL}/api/categories`);
       setCategories(response.data.categories || []);
     } catch (err) {
       console.error('Error fetching categories:', err);
@@ -43,7 +45,7 @@ const Home = () => {
 
   const fetchAreas = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:5000/api/areas');
+      const response = await axios.get(`${API_BASE_URL}/api/areas`);
       setAreas(response.data.areas || []);
     } catch (err) {
       console.error('Error fetching areas:', err);
@@ -52,7 +54,7 @@ const Home = () => {
 
   const fetchSubcategories = async (categoryId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:5000/api/subcategories/category/${categoryId}`);
+      const response = await axios.get(`${API_BASE_URL}/api/subcategories/category/${categoryId}`);
       setSubcategories(response.data.subcategories || []);
     } catch (error) {
       console.error('Error fetching subcategories:', error);
@@ -69,7 +71,7 @@ const Home = () => {
       setSelectedCategoryForSubcats(category);
       // Fetch subcategories for display
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/api/subcategories/category/${category.id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/subcategories/category/${category.id}`);
         setDisplaySubcategories(response.data.subcategories || []);
       } catch (error) {
         console.error('Error fetching subcategories:', error);
@@ -88,7 +90,7 @@ const Home = () => {
       if (filters.area_id) params.append('area_id', filters.area_id);
       params.append('page', filters.page);
 
-      const response = await axios.get(`http://127.0.0.1:5000/api/businesses?${params}`);
+      const response = await axios.get(`${API_BASE_URL}/api/businesses?${params}`);
       setBusinesses(response.data.businesses || []);
       setLoading(false);
     } catch (err) {
@@ -109,7 +111,7 @@ const Home = () => {
     }
 
     try {
-      await axios.post(`http://127.0.0.1:5000/api/businesses/${businessId}/rate`, {
+      await axios.post(`${API_BASE_URL}/api/businesses/${businessId}/rate`, {
         rating: userRating
       });
       
