@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PageLayout from '../components/PageLayout';
 import { categoryService } from '../services';
-import axios from 'axios';
 
 const CategoryManagement = () => {
   const [categories, setCategories] = useState([]);
