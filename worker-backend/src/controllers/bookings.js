@@ -44,4 +44,65 @@ export class BookingController {
       );
     }
   }
+
+  async getById(id) {
+    try {
+      const booking = await this.db.prepare(
+        'SELECT * FROM bookings WHERE id = ?'
+      ).bind(id).first();
+
+      if (!booking) {
+        return new Response(
+          JSON.stringify({ error: 'Booking not found' }),
+          { status: 404, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({ booking }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async update(request, id) {
+    try {
+      const { booking_date, booking_time, notes, status } = await request.json();
+
+      await this.db.prepare(
+        'UPDATE bookings SET booking_date = ?, booking_time = ?, notes = ?, status = ? WHERE id = ?'
+      ).bind(booking_date, booking_time, notes, status, id).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Booking updated successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async delete(id) {
+    try {
+      await this.db.prepare('DELETE FROM bookings WHERE id = ?').bind(id).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Booking deleted successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
 }

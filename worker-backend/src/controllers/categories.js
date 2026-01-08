@@ -74,4 +74,65 @@ export class CategoryController {
       );
     }
   }
+
+  async getById(id) {
+    try {
+      const category = await this.db.prepare(
+        'SELECT * FROM categories WHERE id = ?'
+      ).bind(id).first();
+
+      if (!category) {
+        return new Response(
+          JSON.stringify({ error: 'Category not found' }),
+          { status: 404, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({ category }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async update(request, id) {
+    try {
+      const { name, description, icon } = await request.json();
+
+      await this.db.prepare(
+        'UPDATE categories SET name = ?, description = ?, icon = ? WHERE id = ?'
+      ).bind(name, description, icon, id).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Category updated successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async delete(id) {
+    try {
+      await this.db.prepare('DELETE FROM categories WHERE id = ?').bind(id).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Category deleted successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
 }

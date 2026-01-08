@@ -5,6 +5,25 @@ export class BusinessController {
     this.env = env;
   }
 
+  async getMyBusinesses(request) {
+    try {
+      // Get user from token (would need auth middleware in real app)
+      const businesses = await this.db.prepare(
+        'SELECT * FROM businesses WHERE is_active = 1 ORDER BY created_at DESC'
+      ).all();
+
+      return new Response(
+        JSON.stringify({ businesses: businesses.results }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
   async uploadImage(request) {
     try {
       const formData = await request.formData();
@@ -171,6 +190,81 @@ export class BusinessController {
       return new Response(
         JSON.stringify({ message: 'Rating submitted successfully' }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async update(request, id) {
+    try {
+      const data = await request.json();
+      
+      await this.db.prepare(
+        `UPDATE businesses 
+        SET name = ?, description = ?, address = ?, phone = ?, email = ?, website = ?, 
+        image_url = ?, category_id = ?, subcategory_id = ?, area_id = ?
+        WHERE id = ?`
+      ).bind(
+        data.name, data.description, data.address, data.phone, 
+        data.email, data.website, data.image_url, data.category_id, data.subcategory_id,
+        data.area_id, id
+      ).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Business updated successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async delete(id) {
+    try {
+      await this.db.prepare('DELETE FROM businesses WHERE id = ?').bind(id).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Business deleted successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async addReview(request, id) {
+    try {
+      const { rating, comment } = await request.json();
+
+      // First check if business exists
+      const business = await this.db.prepare(
+        'SELECT id FROM businesses WHERE id = ?'
+      ).bind(id).first();
+
+      if (!business) {
+        return new Response(
+          JSON.stringify({ error: 'Business not found' }),
+          { status: 404, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // In a real app, you'd insert the review into a reviews table
+      // For now, we'll just update the rating
+      await this.rate(request, id);
+
+      return new Response(
+        JSON.stringify({ message: 'Review added successfully' }),
+        { status: 201, headers: { 'Content-Type': 'application/json' } }
       );
     } catch (error) {
       return new Response(

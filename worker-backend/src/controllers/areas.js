@@ -55,4 +55,65 @@ export class AreaController {
       );
     }
   }
+
+  async getById(id) {
+    try {
+      const area = await this.db.prepare(
+        'SELECT * FROM areas WHERE id = ?'
+      ).bind(id).first();
+
+      if (!area) {
+        return new Response(
+          JSON.stringify({ error: 'Area not found' }),
+          { status: 404, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({ area }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async update(request, id) {
+    try {
+      const { name, city, state, pincode } = await request.json();
+
+      await this.db.prepare(
+        'UPDATE areas SET name = ?, city = ?, state = ?, pincode = ? WHERE id = ?'
+      ).bind(name, city, state, pincode, id).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Area updated successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
+
+  async delete(id) {
+    try {
+      await this.db.prepare('DELETE FROM areas WHERE id = ?').bind(id).run();
+
+      return new Response(
+        JSON.stringify({ message: 'Area deleted successfully' }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      );
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 500, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+  }
 }
