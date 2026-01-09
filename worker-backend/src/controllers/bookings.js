@@ -23,11 +23,41 @@ export class BookingController {
 
   async create(request) {
     try {
-      const { business_id, user_id, booking_date, booking_time, notes } = await request.json();
+      const data = await request.json();
+      const { 
+        business_id, 
+        user_id, 
+        booking_date, 
+        booking_time, 
+        notes, 
+        message,
+        customer_name, 
+        customer_email, 
+        customer_phone, 
+        service_type 
+      } = data;
+
+      // Use message as notes if notes is not provided
+      const bookingNotes = notes || message || null;
+      
+      // user_id can be null for guest bookings
+      const userId = user_id || null;
 
       const result = await this.db.prepare(
-        'INSERT INTO bookings (business_id, user_id, booking_date, booking_time, notes) VALUES (?, ?, ?, ?, ?)'
-      ).bind(business_id, user_id, booking_date, booking_time, notes).run();
+        `INSERT INTO bookings 
+        (business_id, user_id, booking_date, booking_time, notes, customer_name, customer_email, customer_phone, service_type) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(
+        business_id, 
+        userId, 
+        booking_date, 
+        booking_time, 
+        bookingNotes,
+        customer_name || null,
+        customer_email || null,
+        customer_phone || null,
+        service_type || null
+      ).run();
 
       const booking = await this.db.prepare(
         'SELECT * FROM bookings WHERE id = ?'
