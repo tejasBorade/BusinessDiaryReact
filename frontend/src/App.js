@@ -14,6 +14,7 @@ import CategoryManagement from './pages/CategoryManagement';
 import MyBusinesses from './pages/MyBusinesses';
 import Profile from './pages/Profile';
 import BookingManagement from './pages/BookingManagement';
+import './modern-theme.css';
 
 function App() {
   return (
