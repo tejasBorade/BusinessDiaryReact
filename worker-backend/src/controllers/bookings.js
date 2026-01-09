@@ -5,12 +5,65 @@ export class BookingController {
 
   async getAll(request) {
     try {
-      const bookings = await this.db.prepare(
-        'SELECT * FROM bookings ORDER BY created_at DESC'
-      ).all();
+      const bookings = await this.db.prepare(`
+        SELECT 
+          b.*,
+          bs.id as business_id,
+          bs.name as business_name,
+          bs.address as business_address,
+          bs.phone as business_phone,
+          c.id as category_id,
+          c.name as category_name,
+          sc.id as subcategory_id,
+          sc.name as subcategory_name,
+          u.id as user_id_ref,
+          u.name as user_name,
+          u.email as user_email
+        FROM bookings b
+        LEFT JOIN businesses bs ON b.business_id = bs.id
+        LEFT JOIN categories c ON bs.category_id = c.id
+        LEFT JOIN subcategories sc ON bs.subcategory_id = sc.id
+        LEFT JOIN users u ON b.user_id = u.id
+        ORDER BY b.created_at DESC
+      `).all();
+
+      // Transform the flat data into nested structure
+      const transformedBookings = bookings.results.map(row => ({
+        id: row.id,
+        business_id: row.business_id,
+        user_id: row.user_id,
+        booking_date: row.booking_date,
+        booking_time: row.booking_time,
+        status: row.status,
+        notes: row.notes,
+        customer_name: row.customer_name,
+        customer_email: row.customer_email,
+        customer_phone: row.customer_phone,
+        service_type: row.service_type,
+        created_at: row.created_at,
+        business: {
+          id: row.business_id,
+          name: row.business_name,
+          address: row.business_address,
+          phone: row.business_phone,
+          category: row.category_id ? {
+            id: row.category_id,
+            name: row.category_name
+          } : null,
+          subcategory: row.subcategory_id ? {
+            id: row.subcategory_id,
+            name: row.subcategory_name
+          } : null
+        },
+        user: row.user_id_ref ? {
+          id: row.user_id_ref,
+          name: row.user_name,
+          email: row.user_email
+        } : null
+      }));
 
       return new Response(
-        JSON.stringify({ bookings: bookings.results }),
+        JSON.stringify({ bookings: transformedBookings }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );
     } catch (error) {

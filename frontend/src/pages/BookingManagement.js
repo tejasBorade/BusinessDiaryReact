@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PageLayout from '../components/PageLayout';
 import './BookingManagement.css';
 
 const BookingManagement = () => {
@@ -83,11 +84,16 @@ const BookingManagement = () => {
   const stats = getBookingStats();
 
   if (loading) {
-    return <div className="loading">Loading bookings...</div>;
+    return (
+      <PageLayout>
+        <div className="loading">Loading bookings...</div>
+      </PageLayout>
+    );
   }
 
   return (
-    <div className="booking-management">
+    <PageLayout>
+      <div className="booking-management">
       <div className="page-header">
         <h1>📅 Booking Management</h1>
         <p>Manage all your appointment bookings</p>
@@ -174,9 +180,9 @@ const BookingManagement = () => {
             <div key={booking.id} className="booking-card">
               <div className="booking-header">
                 <div>
-                  <h3>{booking.business.name}</h3>
+                  <h3>{booking.business?.name || 'Unknown Business'}</h3>
                   <span className="business-category">
-                    {booking.business.category?.name}
+                    {booking.business?.category?.name || 'Uncategorized'}
                   </span>
                 </div>
                 {getStatusBadge(booking.status)}
@@ -252,7 +258,8 @@ const BookingManagement = () => {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </PageLayout>
   );
 };
 
