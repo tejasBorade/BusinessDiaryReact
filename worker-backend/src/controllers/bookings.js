@@ -17,7 +17,7 @@ export class BookingController {
           sc.id as subcategory_id,
           sc.name as subcategory_name,
           u.id as user_id_ref,
-          u.name as user_name,
+          u.full_name as user_name,
           u.email as user_email
         FROM bookings b
         LEFT JOIN businesses bs ON b.business_id = bs.id
