@@ -1,13 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+
+// Create Sidebar Context
+const SidebarContext = createContext();
+
+export const useSidebar = () => {
+  const context = useContext(SidebarContext);
+  if (!context) {
+    return { collapsed: false }; // Default value if used outside provider
+  }
+  return context;
+};
+
+export const SidebarProvider = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <SidebarContext.Provider value={{ collapsed, setCollapsed, mobileMenuOpen, setMobileMenuOpen }}>
+      {children}
+    </SidebarContext.Provider>
+  );
+};
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [collapsed, setCollapsed] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { collapsed, setCollapsed, mobileMenuOpen, setMobileMenuOpen } = useSidebar();
 
   const handleLogout = () => {
     logout();

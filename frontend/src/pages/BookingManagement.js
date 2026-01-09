@@ -43,14 +43,19 @@ const BookingManagement = () => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert(`Booking ${newStatus} successfully!`);
+      
+      // Show success message with notification info
+      const statusText = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+      const message = `✅ Booking ${statusText} Successfully!\n\n📧 Email notification sent to customer\n📱 SMS notification sent to customer${adminComment ? '\n💬 Your comment has been included' : ''}`;
+      alert(message);
+      
       setShowCommentModal(false);
       setAdminComment('');
       setSelectedBooking(null);
       setCommentAction('');
       fetchBookings(); // Refresh the list
     } catch (err) {
-      alert('Failed to update booking status');
+      alert('❌ Failed to update booking status\n\nPlease try again or contact support.');
       console.error(err);
     }
   };
@@ -293,17 +298,31 @@ const BookingManagement = () => {
       {showCommentModal && (
         <div className="modal-overlay" onClick={() => setShowCommentModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Add Comment for {commentAction.charAt(0).toUpperCase() + commentAction.slice(1)}</h3>
-            <p><strong>Booking:</strong> {selectedBooking?.business?.name}</p>
-            <p><strong>Customer:</strong> {selectedBooking?.customer_name}</p>
-            <p><strong>Date:</strong> {selectedBooking?.booking_date} at {selectedBooking?.booking_time}</p>
+            <h3>
+              {commentAction === 'confirmed' ? '✓ Confirm' : commentAction === 'cancelled' ? '✕ Cancel' : '✓ Complete'} Booking
+            </h3>
             
+            <div style={{backgroundColor: '#f0f9ff', padding: '12px', borderRadius: '8px', marginBottom: '15px'}}>
+              <p style={{margin: '0 0 8px 0', fontSize: '14px'}}><strong>📌 Booking Details:</strong></p>
+              <p style={{margin: '4px 0', fontSize: '13px'}}>🏢 <strong>Business:</strong> {selectedBooking?.business?.name}</p>
+              <p style={{margin: '4px 0', fontSize: '13px'}}>👤 <strong>Customer:</strong> {selectedBooking?.customer_name}</p>
+              <p style={{margin: '4px 0', fontSize: '13px'}}>📅 <strong>Date:</strong> {selectedBooking?.booking_date} at {selectedBooking?.booking_time}</p>
+            </div>
+            
+            <div style={{backgroundColor: '#fef3c7', padding: '10px', borderRadius: '6px', marginBottom: '15px', fontSize: '13px'}}>
+              <strong>📧 Notification:</strong> Customer will receive an email and SMS with your decision{adminComment ? ' and your comment' : ''}.
+            </div>
+            
+            <label style={{display: 'block', marginBottom: '8px', fontWeight: '600', fontSize: '14px'}}>
+              💬 Add Comment (Optional)
+            </label>
             <textarea
               className="comment-textarea"
-              placeholder="Add notes about this action (optional)..."
+              placeholder="Add notes for the customer (e.g., 'Please arrive 10 minutes early' or 'Sorry, fully booked')..."
               value={adminComment}
               onChange={(e) => setAdminComment(e.target.value)}
               rows="4"
+              style={{marginBottom: '15px'}}
             />
             
             <div className="modal-actions">
@@ -311,7 +330,7 @@ const BookingManagement = () => {
                 onClick={handleCommentSubmit}
                 className={`btn-action btn-${commentAction === 'confirmed' ? 'confirm' : commentAction === 'cancelled' ? 'cancel' : 'complete'}`}
               >
-                {commentAction === 'confirmed' ? '✓ Confirm' : commentAction === 'cancelled' ? '✕ Cancel' : '✓ Complete'} Booking
+                {commentAction === 'confirmed' ? '✓ Confirm Booking' : commentAction === 'cancelled' ? '✕ Cancel Booking' : '✓ Mark as Complete'}
               </button>
               <button 
                 onClick={() => {
