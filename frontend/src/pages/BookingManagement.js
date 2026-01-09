@@ -8,6 +8,10 @@ const BookingManagement = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all'); // all, pending, confirmed, cancelled, completed
   const [error, setError] = useState('');
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [commentAction, setCommentAction] = useState(''); // 'confirmed', 'cancelled', 'completed'
+  const [adminComment, setAdminComment] = useState('');
 
   useEffect(() => {
     fetchBookings();
@@ -33,14 +37,34 @@ const BookingManagement = () => {
       const token = localStorage.getItem('token');
       await axios.put(
         `https://businessdiary-api.tejasborade9594.workers.dev/api/bookings/${bookingId}`,
-        { status: newStatus },
+        { 
+          status: newStatus,
+          admin_comments: adminComment || null
+        },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       alert(`Booking ${newStatus} successfully!`);
+      setShowCommentModal(false);
+      setAdminComment('');
+      setSelectedBooking(null);
+      setCommentAction('');
       fetchBookings(); // Refresh the list
     } catch (err) {
       alert('Failed to update booking status');
       console.error(err);
+    }
+  };
+
+  const openCommentModal = (booking, action) => {
+    setSelectedBooking(booking);
+    setCommentAction(action);
+    setAdminComment('');
+    setShowCommentModal(true);
+  };
+
+  const handleCommentSubmit = () => {
+    if (selectedBooking && commentAction) {
+      updateBookingStatus(selectedBooking.id, commentAction);
     }
   };
 
@@ -215,10 +239,16 @@ const BookingManagement = () => {
                     <span className="detail-value">{booking.service_type}</span>
                   </div>
                 )}
-                {booking.message && (
+                {booking.notes && (
                   <div className="detail-row message">
                     <span className="detail-label">💬 Message:</span>
-                    <span className="detail-value">{booking.message}</span>
+                    <span className="detail-value">{booking.notes}</span>
+                  </div>
+                )}
+                {booking.admin_comments && (
+                  <div className="detail-row" style={{backgroundColor: '#f0f9ff', padding: '8px', borderRadius: '4px'}}>
+                    <span className="detail-label">📝 Admin Notes:</span>
+                    <span className="detail-value" style={{fontStyle: 'italic'}}>{booking.admin_comments}</span>
                   </div>
                 )}
               </div>
@@ -231,13 +261,13 @@ const BookingManagement = () => {
                   {booking.status === 'pending' && (
                     <>
                       <button
-                        onClick={() => updateBookingStatus(booking.id, 'confirmed')}
+                        onClick={() => openCommentModal(booking, 'confirmed')}
                         className="btn-action btn-confirm"
                       >
                         ✓ Confirm
                       </button>
                       <button
-                        onClick={() => updateBookingStatus(booking.id, 'cancelled')}
+                        onClick={() => openCommentModal(booking, 'cancelled')}
                         className="btn-action btn-cancel"
                       >
                         ✕ Cancel
@@ -246,7 +276,7 @@ const BookingManagement = () => {
                   )}
                   {booking.status === 'confirmed' && (
                     <button
-                      onClick={() => updateBookingStatus(booking.id, 'completed')}
+                      onClick={() => openCommentModal(booking, 'completed')}
                       className="btn-action btn-complete"
                     >
                       ✓ Mark Complete
@@ -256,6 +286,46 @@ const BookingManagement = () => {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Comment Modal */}
+      {showCommentModal && (
+        <div className="modal-overlay" onClick={() => setShowCommentModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Add Comment for {commentAction.charAt(0).toUpperCase() + commentAction.slice(1)}</h3>
+            <p><strong>Booking:</strong> {selectedBooking?.business?.name}</p>
+            <p><strong>Customer:</strong> {selectedBooking?.customer_name}</p>
+            <p><strong>Date:</strong> {selectedBooking?.booking_date} at {selectedBooking?.booking_time}</p>
+            
+            <textarea
+              className="comment-textarea"
+              placeholder="Add notes about this action (optional)..."
+              value={adminComment}
+              onChange={(e) => setAdminComment(e.target.value)}
+              rows="4"
+            />
+            
+            <div className="modal-actions">
+              <button 
+                onClick={handleCommentSubmit}
+                className={`btn-action btn-${commentAction === 'confirmed' ? 'confirm' : commentAction === 'cancelled' ? 'cancel' : 'complete'}`}
+              >
+                {commentAction === 'confirmed' ? '✓ Confirm' : commentAction === 'cancelled' ? '✕ Cancel' : '✓ Complete'} Booking
+              </button>
+              <button 
+                onClick={() => {
+                  setShowCommentModal(false);
+                  setAdminComment('');
+                  setSelectedBooking(null);
+                  setCommentAction('');
+                }}
+                className="btn-action btn-secondary"
+              >
+                Close
+              </button>
+            </div>
+          </div>
         </div>
       )}
       </div>
