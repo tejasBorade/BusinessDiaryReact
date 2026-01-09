@@ -1,0 +1,24 @@
+{
+  "appId": "com.businessdiary.app",
+  "appName": "Business Directory",
+  "webDir": "build",
+  "server": {
+    "androidScheme": "https",
+    "hostname": "businessdiaryreact.pages.dev",
+    "iosScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#10b981",
+      "showSpinner": false,
+      "androidSpinnerStyle": "small",
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#ffffff"
+    },
+    "StatusBar": {
+      "style": "dark",
+      "backgroundColor": "#10b981"
+    }
+  }
+}
