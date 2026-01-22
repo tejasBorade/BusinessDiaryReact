@@ -5,6 +5,7 @@ import { BusinessController } from './controllers/businesses';
 import { AreaController } from './controllers/areas';
 import { BookingController } from './controllers/bookings';
 import { UserController } from './controllers/users';
+import { AIChatController } from './controllers/aiChat';
 
 export class Router {
   constructor(env) {
@@ -16,6 +17,7 @@ export class Router {
     this.areaController = new AreaController(env);
     this.bookingController = new BookingController(env);
     this.userController = new UserController(env);
+    this.aiChatController = new AIChatController(env);
   }
 
   async handle(request) {
@@ -32,6 +34,11 @@ export class Router {
     }
     if (path === '/api/auth/verify' && method === 'GET') {
       return this.authController.verify(request);
+    }
+
+    // AI Chat routes
+    if (path === '/api/ai/chat' && method === 'POST') {
+      return this.aiChatController.chat(request);
     }
 
     // Categories routes

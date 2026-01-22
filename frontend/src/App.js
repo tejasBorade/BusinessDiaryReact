@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { SidebarProvider } from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
+import AIChat from './components/AIChat';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -89,6 +90,7 @@ function App() {
             </PrivateRoute>
           } />
         </Routes>
+        <AIChat />
       </Router>
       </SidebarProvider>
     </AuthProvider>
