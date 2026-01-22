@@ -9,8 +9,7 @@ database_name = "businessdiarydb"
 database_id = "f18a5ca0-42f3-4854-a359-fb9920f3a44c"
 
 # Cloudflare AI binding for AI Assistant Chat
-[ai]
-binding = "AI"
+ai = { binding = "AI" }
 
 # R2 bucket for images (requires R2 to be enabled in Cloudflare Dashboard)
 # [[r2_buckets]]
