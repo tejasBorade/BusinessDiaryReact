@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { SidebarProvider } from './components/Navbar';
 import PrivateRoute from './components/PrivateRoute';
 import AIChat from './components/AIChat';
+import ThemeCustomizer from './components/ThemeCustomizer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -91,6 +92,19 @@ function App() {
           } />
         </Routes>
         <AIChat />
+        <ThemeCustomizer />
+        {/* Debug: ThemeCustomizer should render */}
+        <div style={{
+          position: 'fixed',
+          bottom: '20px',
+          left: '20px',
+          background: 'red',
+          color: 'white',
+          padding: '10px',
+          zIndex: 99999
+        }}>
+          Test Component Loaded
+        </div>
       </Router>
       </SidebarProvider>
     </AuthProvider>

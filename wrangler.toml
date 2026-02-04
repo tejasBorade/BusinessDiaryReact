@@ -1,0 +1,10 @@
+{
+  "$schema": "https://developers.cloudflare.com/pages/platform/functions/bindings/schema",
+  "name": "businessdiaryreact",
+  "pages_build_output_dir": "./frontend/build",
+  "compatibility_date": "2026-01-22",
+  "build": {
+    "command": "cd frontend && npm install && npm run build",
+    "cwd": ""
+  }
+}
